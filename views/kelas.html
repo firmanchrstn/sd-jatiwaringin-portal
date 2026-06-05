@@ -1,5 +1,49 @@
-<div class="empty-state">
-    <i class="ph ph-chalkboard-teacher empty-icon"></i>
-    <h2>Modul Kelas Saya</h2>
-    <p>Halaman ini akan menampilkan daftar kelas yang Anda ampu, jadwal pelajaran, dan penempatan ruangan.</p>
+<div class="view-section">
+    <div class="page-header">
+        <div class="header-text">
+            <h1>Modul Kelas Saya</h1>
+            <p>Manajemen jadwal dan mata pelajaran yang Anda ampu (Demo CRUD LocalStorage).</p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Tambah Jadwal Kelas Baru</h2>
+        </div>
+        <div style="padding: 24px;">
+            <form id="form-tambah-kelas" class="form-row">
+                <div class="form-group">
+                    <label class="form-label">MATA PELAJARAN</label>
+                    <input type="text" id="input-mapel" class="form-control" placeholder="Mis: Matematika Terapan"
+                        required autocomplete="off">
+                </div>
+
+                <div class="form-group" style="flex: 0.5;">
+                    <label class="form-label">NAMA KELAS</label>
+                    <input type="text" id="input-namakelas" class="form-control" placeholder="Mis: 4B" required
+                        autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">HARI & WAKTU</label>
+                    <input type="text" id="input-jadwal" class="form-control" placeholder="Mis: Senin, 08:00 - 09:30"
+                        required autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">RUANGAN</label>
+                    <input type="text" id="input-ruangan" class="form-control" placeholder="Mis: Ruang 12 (Gedung B)"
+                        required autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="ph ph-plus-circle" style="font-size: 18px;"></i> Simpan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="grid-kelas"
+        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; padding-bottom: 32px;">
+    </div>
 </div>

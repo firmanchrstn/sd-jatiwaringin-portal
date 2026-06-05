@@ -2,7 +2,43 @@
     <div class="page-header">
         <div class="header-text">
             <h1>Modul Presensi Harian</h1>
-            <p>Pencatatan kehadiran terintegrasi ke dalam basis data.</p>
+            <p>Pencatatan kehadiran dinamis (Demo CRUD LocalStorage).</p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Catat Kehadiran Baru</h2>
+        </div>
+        <div style="padding: 24px;">
+            <form id="form-tambah-presensi" class="form-row">
+                <div class="form-group" style="flex: 2;">
+                    <label class="form-label">NAMA LENGKAP SISWA</label>
+                    <input type="text" id="input-nama" class="form-control" placeholder="Ketik nama siswa..." required
+                        autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">NISN (Opsional)</label>
+                    <input type="text" id="input-nisn" class="form-control" placeholder="Mis: 00123456"
+                        autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">STATUS</label>
+                    <select id="input-status" class="form-control" required>
+                        <option value="" disabled selected>Pilih Status...</option>
+                        <option value="Hadir">Hadir</option>
+                        <option value="Sakit">Sakit</option>
+                        <option value="Terlambat">Terlambat</option>
+                        <option value="Alpa">Alpa</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="ph ph-plus-circle" style="font-size: 18px;"></i> Simpan
+                </button>
+            </form>
         </div>
     </div>
 
@@ -10,7 +46,7 @@
         <div class="card-header">
             <div>
                 <h2>Rekap Kehadiran Siswa</h2>
-                <p class="subtitle">Kelas 4B - SD Jatiwaringin 1</p>
+                <p class="subtitle">Data tersimpan di penyimpanan lokal perangkat</p>
             </div>
             <button class="btn btn-outline" id="btn-ekspor">
                 <i class="ph ph-download-simple"></i> Unduh Laporan (CSV)
@@ -22,40 +58,12 @@
                     <tr>
                         <th>Nama Siswa</th>
                         <th>NISN</th>
-                        <th>Waktu Masuk</th>
-                        <th>Keterangan</th>
+                        <th>Waktu Catat</th>
                         <th>Status</th>
+                        <th style="text-align: right;">Aksi</th>
                     </tr>
                 </thead>
                 <tbody id="body-tabel-presensi">
-                    <tr>
-                        <td class="font-medium">Ahmad Maulana</td>
-                        <td class="text-muted">0012345678</td>
-                        <td>06:45 WIB</td>
-                        <td>-</td>
-                        <td><span class="badge badge-success">Hadir</span></td>
-                    </tr>
-                    <tr>
-                        <td class="font-medium">Budi Santoso</td>
-                        <td class="text-muted">0012345679</td>
-                        <td>06:50 WIB</td>
-                        <td>-</td>
-                        <td><span class="badge badge-success">Hadir</span></td>
-                    </tr>
-                    <tr>
-                        <td class="font-medium">Citra Kirana</td>
-                        <td class="text-muted">0012345680</td>
-                        <td>-</td>
-                        <td>Surat Dokter terlampir</td>
-                        <td><span class="badge badge-danger">Sakit</span></td>
-                    </tr>
-                    <tr>
-                        <td class="font-medium">Dewi Lestari</td>
-                        <td class="text-muted">0012345681</td>
-                        <td>07:15 WIB</td>
-                        <td>Ban sepeda bocor</td>
-                        <td><span class="badge badge-warning">Terlambat</span></td>
-                    </tr>
                 </tbody>
             </table>
         </div>

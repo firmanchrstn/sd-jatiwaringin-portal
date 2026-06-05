@@ -1,5 +1,72 @@
-<div class="empty-state">
-    <i class="ph ph-users empty-icon"></i>
-    <h2>Data Profil Siswa</h2>
-    <p>Database profil dan biodata lengkap seluruh siswa yang terdaftar di sekolah.</p>
+<div class="view-section">
+    <div class="page-header">
+        <div class="header-text">
+            <h1>Data Induk Siswa</h1>
+            <p>Manajemen database profil dan biodata siswa aktif (Demo CRUD LocalStorage).</p>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Registrasi Siswa Baru</h2>
+        </div>
+        <div style="padding: 24px;">
+            <form id="form-tambah-siswa" class="form-row">
+                <div class="form-group" style="flex: 0.8;">
+                    <label class="form-label">NISN</label>
+                    <input type="text" id="input-siswa-nisn" class="form-control" placeholder="Mis: 0012345678" required
+                        autocomplete="off">
+                </div>
+
+                <div class="form-group" style="flex: 1.5;">
+                    <label class="form-label">NAMA LENGKAP</label>
+                    <input type="text" id="input-siswa-nama" class="form-control" placeholder="Nama Lengkap Siswa"
+                        required autocomplete="off">
+                </div>
+
+                <div class="form-group" style="flex: 0.8;">
+                    <label class="form-label">JENIS KELAMIN</label>
+                    <select id="input-siswa-jk" class="form-control" required>
+                        <option value="" disabled selected>Pilih Gender...</option>
+                        <option value="Laki-laki">Laki-laki</option>
+                        <option value="Perempuan">Perempuan</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="flex: 1.2;">
+                    <label class="form-label">NAMA WALI MURID</label>
+                    <input type="text" id="input-siswa-wali" class="form-control" placeholder="Nama Orang Tua/Wali"
+                        required autocomplete="off">
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="ph ph-user-plus" style="font-size: 18px;"></i> Daftarkan
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card data-table-card">
+        <div class="card-header">
+            <div>
+                <h2>Direktori Siswa</h2>
+                <p class="subtitle">Daftar seluruh siswa yang terdaftar di sistem</p>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table id="tabel-siswa">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">NISN</th>
+                        <th style="width: 35%;">Profil Siswa</th>
+                        <th style="width: 15%;">L/P</th>
+                        <th style="width: 25%;">Wali Murid</th>
+                        <th style="width: 10%; text-align: right;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="body-tabel-siswa">
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
