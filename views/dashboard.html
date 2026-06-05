@@ -1,0 +1,78 @@
+<div class="view-section">
+    <div class="page-header">
+        <div class="header-text">
+            <h1>Selamat Pagi, Bapak/Ibu! 👋</h1>
+            <p>Berikut adalah ringkasan aktivitas dan tugas harian Anda.</p>
+        </div>
+        <div class="date-card">
+            <i class="ph ph-calendar-blank"></i>
+            <div>
+                <span class="date-label">HARI INI</span>
+                <strong id="tanggal-hari-ini">Memuat...</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="main-column">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon primary-light"><i class="ph ph-book-open-text"></i></div>
+                    <div class="stat-details">
+                        <p>Jadwal Mengajar</p>
+                        <h3>3 Kelas</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon success-light"><i class="ph ph-users-three"></i></div>
+                    <div class="stat-details">
+                        <p>Total Siswa</p>
+                        <h3>84 Anak</h3>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon warning-light"><i class="ph ph-clipboard-text"></i></div>
+                    <div class="stat-details">
+                        <p>Tugas Belum Dinilai</p>
+                        <h3>12 Berkas</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card data-table-card">
+                <div class="card-header">
+                    <div>
+                        <h2>Status Kelas Hari Ini</h2>
+                        <p class="subtitle">Pantauan singkat</p>
+                    </div>
+                </div>
+                <div class="table-responsive" style="padding: 24px; color: var(--color-text-muted);">
+                    Silakan menuju modul <b>Presensi Harian</b> untuk mencatat kehadiran siswa dan mengunduh laporan.
+                </div>
+            </div>
+        </div>
+
+        <div class="side-column">
+            <div class="card action-card">
+                <h3 class="card-title">Aksi Cepat</h3>
+                <p class="subtitle mb-4">Pintas ke tugas prioritas</p>
+                <button class="btn-action" onclick="bukaModul('presensi')">
+                    <div class="action-icon"><i class="ph ph-hand-pointing"></i></div>
+                    <div class="action-text">
+                        <h4>Input Presensi</h4>
+                        <p>Catat kehadiran siswa</p>
+                    </div>
+                    <i class="ph ph-caret-right caret"></i>
+                </button>
+                <button class="btn-action" onclick="bukaModul('nilai')">
+                    <div class="action-icon"><i class="ph ph-exam"></i></div>
+                    <div class="action-text">
+                        <h4>Input Nilai Rapor</h4>
+                        <p>Masukkan nilai tugas & ujian</p>
+                    </div>
+                    <i class="ph ph-caret-right caret"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

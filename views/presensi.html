@@ -1,0 +1,63 @@
+<div class="view-section">
+    <div class="page-header">
+        <div class="header-text">
+            <h1>Modul Presensi Harian</h1>
+            <p>Pencatatan kehadiran terintegrasi ke dalam basis data.</p>
+        </div>
+    </div>
+
+    <div class="card data-table-card">
+        <div class="card-header">
+            <div>
+                <h2>Rekap Kehadiran Siswa</h2>
+                <p class="subtitle">Kelas 4B - SD Jatiwaringin 1</p>
+            </div>
+            <button class="btn btn-outline" id="btn-ekspor">
+                <i class="ph ph-download-simple"></i> Unduh Laporan (CSV)
+            </button>
+        </div>
+        <div class="table-responsive">
+            <table id="tabel-presensi">
+                <thead>
+                    <tr>
+                        <th>Nama Siswa</th>
+                        <th>NISN</th>
+                        <th>Waktu Masuk</th>
+                        <th>Keterangan</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="body-tabel-presensi">
+                    <tr>
+                        <td class="font-medium">Ahmad Maulana</td>
+                        <td class="text-muted">0012345678</td>
+                        <td>06:45 WIB</td>
+                        <td>-</td>
+                        <td><span class="badge badge-success">Hadir</span></td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Budi Santoso</td>
+                        <td class="text-muted">0012345679</td>
+                        <td>06:50 WIB</td>
+                        <td>-</td>
+                        <td><span class="badge badge-success">Hadir</span></td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Citra Kirana</td>
+                        <td class="text-muted">0012345680</td>
+                        <td>-</td>
+                        <td>Surat Dokter terlampir</td>
+                        <td><span class="badge badge-danger">Sakit</span></td>
+                    </tr>
+                    <tr>
+                        <td class="font-medium">Dewi Lestari</td>
+                        <td class="text-muted">0012345681</td>
+                        <td>07:15 WIB</td>
+                        <td>Ban sepeda bocor</td>
+                        <td><span class="badge badge-warning">Terlambat</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
