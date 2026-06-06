@@ -1,43 +1,37 @@
 <div class="view-section">
     <div class="page-header">
         <div class="header-text">
-            <h1>Modul Presensi Harian</h1>
-            <p>Pencatatan kehadiran dinamis (Demo CRUD LocalStorage).</p>
+            <h1>Presensi Harian</h1>
+            <p>Pendataan absensi berdasarkan Tanggal, Bulan, dan Tahun.</p>
         </div>
     </div>
 
     <div class="card mb-4">
         <div class="card-header">
-            <h2>Catat Kehadiran Baru</h2>
+            <h2>Catat Kehadiran</h2>
         </div>
         <div style="padding: 24px;">
             <form id="form-tambah-presensi" class="form-row">
+                <div class="form-group" style="flex: 1.5;">
+                    <label class="form-label">TANGGAL PRESENSI</label>
+                    <input type="date" id="input-tanggal" class="form-control" required>
+                </div>
                 <div class="form-group" style="flex: 2;">
-                    <label class="form-label">NAMA LENGKAP SISWA</label>
+                    <label class="form-label">NAMA SISWA</label>
                     <input type="text" id="input-nama" class="form-control" placeholder="Ketik nama siswa..." required
                         autocomplete="off">
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label">NISN (Opsional)</label>
-                    <input type="text" id="input-nisn" class="form-control" placeholder="Mis: 00123456"
-                        autocomplete="off">
-                </div>
-
                 <div class="form-group">
                     <label class="form-label">STATUS</label>
                     <select id="input-status" class="form-control" required>
-                        <option value="" disabled selected>Pilih Status...</option>
+                        <option value="" disabled selected>Pilih...</option>
                         <option value="Hadir">Hadir</option>
                         <option value="Sakit">Sakit</option>
-                        <option value="Terlambat">Terlambat</option>
+                        <option value="Izin">Izin</option>
                         <option value="Alpa">Alpa</option>
                     </select>
                 </div>
-
-                <button type="submit" class="btn btn-primary">
-                    <i class="ph ph-plus-circle" style="font-size: 18px;"></i> Simpan
-                </button>
+                <button type="submit" class="btn btn-primary"><i class="ph ph-plus-circle"></i> Simpan</button>
             </form>
         </div>
     </div>
@@ -45,26 +39,22 @@
     <div class="card data-table-card">
         <div class="card-header">
             <div>
-                <h2>Rekap Kehadiran Siswa</h2>
-                <p class="subtitle">Data tersimpan di penyimpanan lokal perangkat</p>
+                <h2>Rekap Kehadiran</h2>
             </div>
-            <button class="btn btn-outline" id="btn-ekspor">
-                <i class="ph ph-download-simple"></i> Unduh Laporan (CSV)
-            </button>
+            <button class="btn btn-outline" id="btn-ekspor"><i class="ph ph-download-simple"></i> Unduh Laporan
+                (CSV)</button>
         </div>
         <div class="table-responsive">
             <table id="tabel-presensi">
                 <thead>
                     <tr>
+                        <th>Tanggal</th>
                         <th>Nama Siswa</th>
-                        <th>NISN</th>
-                        <th>Waktu Catat</th>
                         <th>Status</th>
                         <th style="text-align: right;">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="body-tabel-presensi">
-                </tbody>
+                <tbody id="body-tabel-presensi"></tbody>
             </table>
         </div>
     </div>

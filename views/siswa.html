@@ -2,46 +2,87 @@
     <div class="page-header">
         <div class="header-text">
             <h1>Data Induk Siswa</h1>
-            <p>Manajemen database profil dan biodata siswa aktif (Demo CRUD LocalStorage).</p>
+            <p>Format lengkap data siswa Kelas 1A - 6C.</p>
         </div>
     </div>
 
     <div class="card mb-4">
         <div class="card-header">
-            <h2>Registrasi Siswa Baru</h2>
+            <h2>Registrasi Data Siswa Baru</h2>
         </div>
         <div style="padding: 24px;">
-            <form id="form-tambah-siswa" class="form-row">
-                <div class="form-group" style="flex: 0.8;">
-                    <label class="form-label">NISN</label>
-                    <input type="text" id="input-siswa-nisn" class="form-control" placeholder="Mis: 0012345678" required
-                        autocomplete="off">
+            <form id="form-tambah-siswa" style="display: flex; flex-direction: column; gap: 20px;">
+
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">NAMA LENGKAP</label><input type="text" id="s-nama"
+                            class="form-control" required></div>
+                    <div class="form-group" style="flex: 0.5;"><label class="form-label">JENIS KELAMIN</label><select
+                            id="s-jk" class="form-control" required>
+                            <option value="Laki-laki">L</option>
+                            <option value="Perempuan">P</option>
+                        </select></div>
+                    <div class="form-group" style="flex: 0.5;">
+                        <label class="form-label">KELAS</label>
+                        <select id="s-kelas" class="form-control" required>
+                            <option value="1A">1A</option>
+                            <option value="1B">1B</option>
+                            <option value="1C">1C</option>
+                            <option value="2A">2A</option>
+                            <option value="2B">2B</option>
+                            <option value="2C">2C</option>
+                            <option value="3A">3A</option>
+                            <option value="3B">3B</option>
+                            <option value="3C">3C</option>
+                            <option value="4A">4A</option>
+                            <option value="4B">4B</option>
+                            <option value="4C">4C</option>
+                            <option value="5A">5A</option>
+                            <option value="5B">5B</option>
+                            <option value="5C">5C</option>
+                            <option value="6A">6A</option>
+                            <option value="6B">6B</option>
+                            <option value="6C">6C</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group" style="flex: 1.5;">
-                    <label class="form-label">NAMA LENGKAP</label>
-                    <input type="text" id="input-siswa-nama" class="form-control" placeholder="Nama Lengkap Siswa"
-                        required autocomplete="off">
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">TEMPAT LAHIR</label><input type="text"
+                            id="s-tmplahir" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">TANGGAL LAHIR</label><input type="date"
+                            id="s-tgllahir" class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">AGAMA</label><input type="text" id="s-agama"
+                            class="form-control" required></div>
                 </div>
 
-                <div class="form-group" style="flex: 0.8;">
-                    <label class="form-label">JENIS KELAMIN</label>
-                    <select id="input-siswa-jk" class="form-control" required>
-                        <option value="" disabled selected>Pilih Gender...</option>
-                        <option value="Laki-laki">Laki-laki</option>
-                        <option value="Perempuan">Perempuan</option>
-                    </select>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">NIK SISWA</label><input type="number" id="s-nik"
+                            class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">NO. KARTU KELUARGA (KK)</label><input
+                            type="number" id="s-kk" class="form-control" required></div>
                 </div>
 
-                <div class="form-group" style="flex: 1.2;">
-                    <label class="form-label">NAMA WALI MURID</label>
-                    <input type="text" id="input-siswa-wali" class="form-control" placeholder="Nama Orang Tua/Wali"
-                        required autocomplete="off">
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">NAMA AYAH</label><input type="text" id="s-ayah"
+                            class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">PEKERJAAN AYAH</label><input type="text"
+                            id="s-kerjaayah" class="form-control" required></div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <i class="ph ph-user-plus" style="font-size: 18px;"></i> Daftarkan
-                </button>
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">NAMA IBU</label><input type="text" id="s-ibu"
+                            class="form-control" required></div>
+                    <div class="form-group"><label class="form-label">PEKERJAAN IBU</label><input type="text"
+                            id="s-kerjaibu" class="form-control" required></div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group"><label class="form-label">ALAMAT LENGKAP</label><input type="text"
+                            id="s-alamat" class="form-control" placeholder="Jl. Raya Jatiwaringin..." required></div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: fit-content;"><i
+                        class="ph ph-user-plus"></i> Daftarkan Siswa</button>
             </form>
         </div>
     </div>
@@ -50,22 +91,20 @@
         <div class="card-header">
             <div>
                 <h2>Direktori Siswa</h2>
-                <p class="subtitle">Daftar seluruh siswa yang terdaftar di sistem</p>
             </div>
         </div>
         <div class="table-responsive">
             <table id="tabel-siswa">
                 <thead>
                     <tr>
-                        <th style="width: 15%;">NISN</th>
-                        <th style="width: 35%;">Profil Siswa</th>
-                        <th style="width: 15%;">L/P</th>
-                        <th style="width: 25%;">Wali Murid</th>
-                        <th style="width: 10%; text-align: right;">Aksi</th>
+                        <th>Nama / NIK</th>
+                        <th>Kelas</th>
+                        <th>L/P</th>
+                        <th>Orang Tua</th>
+                        <th style="text-align: right;">Aksi</th>
                     </tr>
                 </thead>
-                <tbody id="body-tabel-siswa">
-                </tbody>
+                <tbody id="body-tabel-siswa"></tbody>
             </table>
         </div>
     </div>

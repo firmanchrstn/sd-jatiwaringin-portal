@@ -1,0 +1,80 @@
+<div class="view-section">
+    <div class="page-header">
+        <div class="header-text">
+            <h1>Kalender Pendidikan (Kaldik)</h1>
+            <p>Agenda dan kegiatan utama terintegrasi SDN Jatiwaringin 1.</p>
+        </div>
+    </div>
+
+    <div class="dashboard-grid" style="grid-template-columns: 1fr 380px; align-items: start;">
+
+        <div class="card">
+            <div style="padding: 24px;">
+                <div class="calendar-header-ui">
+                    <button id="btn-kaldik-prev"><i class="ph ph-caret-left"></i></button>
+                    <h2 id="kaldik-month-year"
+                        style="font-size: 18px; font-weight: 700; color: var(--color-text-main);">Memuat...</h2>
+                    <button id="btn-kaldik-next"><i class="ph ph-caret-right"></i></button>
+                </div>
+
+                <div class="calendar-grid" style="margin-bottom: 8px;">
+                    <div class="calendar-day-name">Min</div>
+                    <div class="calendar-day-name">Sen</div>
+                    <div class="calendar-day-name">Sel</div>
+                    <div class="calendar-day-name">Rab</div>
+                    <div class="calendar-day-name">Kam</div>
+                    <div class="calendar-day-name">Jum</div>
+                    <div class="calendar-day-name">Sab</div>
+                </div>
+
+                <div class="calendar-grid" id="kaldik-days-container"></div>
+            </div>
+        </div>
+
+        <div class="sticky-panel" style="display: flex; flex-direction: column; gap: 24px;">
+
+            <div class="card">
+                <div class="card-header" style="background: var(--color-primary-light); border-bottom: none;">
+                    <h2 id="kaldik-selected-date-text" style="color: var(--color-primary); font-size: 15px;">Agenda
+                        Tanggal Terpilih</h2>
+                </div>
+                <div style="padding: 24px;" id="kaldik-agenda-detail">
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="ph ph-plus-circle"></i> Tambah Agenda</h2>
+                </div>
+                <div style="padding: 24px;">
+                    <form id="form-tambah-kaldik" style="display: flex; flex-direction: column; gap: 16px;">
+
+                        <div class="form-group">
+                            <label class="form-label">TANGGAL AGENDA</label>
+                            <input type="date" id="kaldik-input-tgl" class="form-control" required readonly
+                                style="background: var(--color-background); cursor: not-allowed; color: var(--color-text-muted);">
+                            <small style="font-size: 11px; color: var(--color-primary); margin-top: 4px;">*Klik tanggal
+                                di kalender untuk mengubah</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">NAMA KEGIATAN</label>
+                            <input type="text" id="kaldik-input-kegiatan" class="form-control"
+                                placeholder="Mis: Ujian Tengah Semester" required autocomplete="off">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">KETERANGAN / DETAIL</label>
+                            <input type="text" id="kaldik-input-ket" class="form-control"
+                                placeholder="Mis: Evaluasi ganjil kelas 1-6" autocomplete="off">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="margin-top: 8px; justify-content: center;">
+                            Simpan ke Kaldik
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

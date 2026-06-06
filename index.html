@@ -5,21 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Guru - Sistem Informasi SD Jatiwaringin 1</title>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
     <div class="app-container">
+
         <aside class="sidebar">
+
             <div class="sidebar-header">
                 <div class="logo-box">
                     <i class="ph-fill ph-graduation-cap"></i>
                 </div>
                 <div class="logo-text">
                     <h2>SD Jatiwaringin 1</h2>
-                    <p>Portal Akademik Guru</p>
                 </div>
             </div>
 
@@ -36,20 +40,24 @@
                         <i class="ph ph-users"></i> Data Siswa
                     </a>
                     <a href="#" class="nav-item" data-target="presensi">
-                        <i class="ph ph-check-square-offset"></i> Presensi Harian
+                        <i class="ph ph-check-square-offset"></i> Absensi Harian
                     </a>
                     <a href="#" class="nav-item" data-target="nilai">
                         <i class="ph ph-exam"></i> Nilai Akademik
+                    </a>
+                    <a href="#" class="nav-item" data-target="kaldik">
+                        <i class="ph ph-calendar-check"></i> Kalender Pendidikan
                     </a>
                 </nav>
             </div>
 
             <div class="sidebar-footer">
-                <button class="btn btn-outline w-100 mb-4" id="btn-tambah-data">
-                    <i class="ph ph-plus"></i> Tambah Data
+                <button class="btn btn-outline w-100 mb-4" id="btn-info-sekolah" style="justify-content: center;">
+                    <i class="ph ph-buildings"></i> Profil Sekolah
                 </button>
-                <a href="#" class="nav-item" data-target="pengaturan" id="btn-pengaturan"><i class="ph ph-gear"></i>
-                    Pengaturan</a>
+                <a href="#" class="nav-item" data-target="pengaturan" id="btn-pengaturan">
+                    <i class="ph ph-gear"></i> Pengaturan
+                </a>
                 <a href="#" class="nav-item text-danger" id="btn-keluar">
                     <i class="ph ph-sign-out"></i> Keluar Sesi
                 </a>
@@ -57,7 +65,9 @@
         </aside>
 
         <main class="main-content">
+
             <header class="top-nav">
+
                 <div class="search-bar">
                     <i class="ph ph-magnifying-glass"></i>
                     <input type="text" id="input-pencarian" placeholder="Pencarian cepat di modul aktif...">
@@ -68,7 +78,9 @@
                         <i class="ph ph-bell"></i>
                         <span class="indicator"></span>
                     </button>
+
                     <div class="divider"></div>
+
                     <div class="user-profile" id="btn-profil">
                         <div class="avatar">GP</div>
                         <div class="user-info">
@@ -82,6 +94,7 @@
 
             <div class="dashboard-wrapper" id="app-content">
             </div>
+
         </main>
     </div>
 
