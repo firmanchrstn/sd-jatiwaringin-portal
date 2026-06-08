@@ -6,7 +6,6 @@
         </div>
     </div>
 
-    <!-- AREA INPUT (TERPISAH) -->
     <div class="card mb-4">
         <div class="card-header">
             <h2>Input Nilai Evaluasi</h2>
@@ -14,7 +13,8 @@
         <div style="padding: 24px;">
             <form id="form-tambah-nilai" class="form-row">
                 <div class="form-group" style="flex: 1.5;"><label class="form-label">NAMA SISWA</label><input
-                        type="text" id="input-nilai-nama" class="form-control" required></div>
+                        type="text" id="input-nilai-nama" class="form-control" placeholder="Ketik nama siswa..."
+                        required></div>
                 <div class="form-group"><label class="form-label">MATA PELAJARAN</label><input type="text"
                         id="input-nilai-mapel" class="form-control" required></div>
                 <div class="form-group" style="flex: 1.5;">
@@ -36,13 +36,12 @@
         </div>
     </div>
 
-    <!-- AREA DOWNLOAD (TERPISAH) -->
     <div class="card mb-4" style="background: var(--color-primary-light); border: 1px solid var(--color-primary);">
         <div style="padding: 24px; display: flex; justify-content: space-between; align-items: center;">
             <div>
                 <h2 style="color: var(--color-primary); margin-bottom: 4px;">Pusat Unduh Laporan</h2>
                 <p style="color: var(--color-text-main); font-size: 13px;">Ekspor seluruh rekapitulasi nilai menjadi
-                    file Spreadsheet (CSV).</p>
+                    file Spreadsheet (CSV) berdasarkan filter yang aktif.</p>
             </div>
             <button class="btn btn-primary" id="btn-ekspor-nilai">
                 <i class="ph ph-download-simple"></i> Ekspor Rapor Kelas
@@ -51,9 +50,34 @@
     </div>
 
     <div class="card data-table-card">
-        <div class="card-header">
+        <div class="card-header"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div>
                 <h2>Tabel Nilai Siswa</h2>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <select id="filter-kelas-nilai" class="form-control"
+                    style="width: auto; height: 38px; border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; cursor: pointer;">
+                    <option value="Semua">Semua Kelas</option>
+                    <option value="1A">Kelas 1A</option>
+                    <option value="1B">Kelas 1B</option>
+                    <option value="1C">Kelas 1C</option>
+                    <option value="2A">Kelas 2A</option>
+                    <option value="2B">Kelas 2B</option>
+                    <option value="2C">Kelas 2C</option>
+                    <option value="3A">Kelas 3A</option>
+                    <option value="3B">Kelas 3B</option>
+                    <option value="3C">Kelas 3C</option>
+                    <option value="4A">Kelas 4A</option>
+                    <option value="4B">Kelas 4B</option>
+                    <option value="4C">Kelas 4C</option>
+                    <option value="5A">Kelas 5A</option>
+                    <option value="5B">Kelas 5B</option>
+                    <option value="5C">Kelas 5C</option>
+                    <option value="6A">Kelas 6A</option>
+                    <option value="6B">Kelas 6B</option>
+                    <option value="6C">Kelas 6C</option>
+                </select>
             </div>
         </div>
         <div class="table-responsive">

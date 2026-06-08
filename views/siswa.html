@@ -2,7 +2,7 @@
     <div class="page-header">
         <div class="header-text">
             <h1>Data Induk Siswa</h1>
-            <p>Format lengkap data siswa Kelas 1A - 6C.</p>
+            <p>Format lengkap data siswa Kelas 1A - 6C terpusat.</p>
         </div>
     </div>
 
@@ -12,7 +12,6 @@
         </div>
         <div style="padding: 24px;">
             <form id="form-tambah-siswa" style="display: flex; flex-direction: column; gap: 20px;">
-
                 <div class="form-row">
                     <div class="form-group"><label class="form-label">NAMA LENGKAP</label><input type="text" id="s-nama"
                             class="form-control" required></div>
@@ -45,7 +44,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group"><label class="form-label">TEMPAT LAHIR</label><input type="text"
                             id="s-tmplahir" class="form-control" required></div>
@@ -54,33 +52,28 @@
                     <div class="form-group"><label class="form-label">AGAMA</label><input type="text" id="s-agama"
                             class="form-control" required></div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group"><label class="form-label">NIK SISWA</label><input type="number" id="s-nik"
                             class="form-control" required></div>
                     <div class="form-group"><label class="form-label">NO. KARTU KELUARGA (KK)</label><input
                             type="number" id="s-kk" class="form-control" required></div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group"><label class="form-label">NAMA AYAH</label><input type="text" id="s-ayah"
                             class="form-control" required></div>
                     <div class="form-group"><label class="form-label">PEKERJAAN AYAH</label><input type="text"
                             id="s-kerjaayah" class="form-control" required></div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group"><label class="form-label">NAMA IBU</label><input type="text" id="s-ibu"
                             class="form-control" required></div>
                     <div class="form-group"><label class="form-label">PEKERJAAN IBU</label><input type="text"
                             id="s-kerjaibu" class="form-control" required></div>
                 </div>
-
                 <div class="form-row">
                     <div class="form-group"><label class="form-label">ALAMAT LENGKAP</label><input type="text"
                             id="s-alamat" class="form-control" placeholder="Jl. Raya Jatiwaringin..." required></div>
                 </div>
-
                 <button type="submit" class="btn btn-primary" style="width: fit-content;"><i
                         class="ph ph-user-plus"></i> Daftarkan Siswa</button>
             </form>
@@ -88,9 +81,39 @@
     </div>
 
     <div class="card data-table-card">
-        <div class="card-header">
+        <div class="card-header"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div>
                 <h2>Direktori Siswa</h2>
+            </div>
+
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <select id="filter-kelas-siswa" class="form-control"
+                    style="width: auto; height: 38px; border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; cursor: pointer;">
+                    <option value="Semua">Semua Kelas</option>
+                    <option value="1A">Tampilkan Kelas 1A</option>
+                    <option value="1B">Tampilkan Kelas 1B</option>
+                    <option value="1C">Tampilkan Kelas 1C</option>
+                    <option value="2A">Tampilkan Kelas 2A</option>
+                    <option value="2B">Tampilkan Kelas 2B</option>
+                    <option value="2C">Tampilkan Kelas 2C</option>
+                    <option value="3A">Tampilkan Kelas 3A</option>
+                    <option value="3B">Tampilkan Kelas 3B</option>
+                    <option value="3C">Tampilkan Kelas 3C</option>
+                    <option value="4A">Tampilkan Kelas 4A</option>
+                    <option value="4B">Tampilkan Kelas 4B</option>
+                    <option value="4C">Tampilkan Kelas 4C</option>
+                    <option value="5A">Tampilkan Kelas 5A</option>
+                    <option value="5B">Tampilkan Kelas 5B</option>
+                    <option value="5C">Tampilkan Kelas 5C</option>
+                    <option value="6A">Tampilkan Kelas 6A</option>
+                    <option value="6B">Tampilkan Kelas 6B</option>
+                    <option value="6C">Tampilkan Kelas 6C</option>
+                </select>
+
+                <button class="btn btn-outline" id="btn-ekspor-siswa" style="height: 38px;">
+                    <i class="ph ph-download-simple"></i> Ekspor (CSV)
+                </button>
             </div>
         </div>
         <div class="table-responsive">

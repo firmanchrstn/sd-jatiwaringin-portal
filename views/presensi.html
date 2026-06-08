@@ -1,27 +1,37 @@
 <div class="view-section">
     <div class="page-header">
         <div class="header-text">
-            <h1>Presensi Harian</h1>
-            <p>Pendataan absensi berdasarkan Tanggal, Bulan, dan Tahun.</p>
+            <h1>Presensi Harian Terintegrasi</h1>
+            <p>Sistem absensi pintar berdasarkan mata pelajaran dan kelas binaan Anda.</p>
         </div>
     </div>
 
     <div class="card mb-4">
         <div class="card-header">
-            <h2>Catat Kehadiran</h2>
+            <h2 style="display: flex; align-items: center; gap: 8px;">
+                <i class="ph ph-list-checks" style="color: var(--color-primary); font-size: 20px;"></i> Catat Kehadiran
+            </h2>
         </div>
         <div style="padding: 24px;">
             <form id="form-tambah-presensi" class="form-row">
-                <div class="form-group" style="flex: 1.5;">
-                    <label class="form-label">TANGGAL PRESENSI</label>
+                <div class="form-group" style="flex: 1;">
+                    <label class="form-label">TANGGAL</label>
                     <input type="date" id="input-tanggal" class="form-control" required>
                 </div>
-                <div class="form-group" style="flex: 2;">
-                    <label class="form-label">NAMA SISWA</label>
-                    <input type="text" id="input-nama" class="form-control" placeholder="Ketik nama siswa..." required
-                        autocomplete="off">
+                <div class="form-group" style="flex: 1.5;">
+                    <label class="form-label">MATA PELAJARAN BINAAN</label>
+                    <select id="input-mapel-kelas" class="form-control" required>
+                        <option value="" disabled selected>Memuat jadwal Anda...</option>
+                    </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group" style="flex: 1.5;">
+                    <label class="form-label">NAMA SISWA</label>
+                    <select id="input-nama" class="form-control" required disabled
+                        style="background: var(--color-background); cursor: not-allowed;">
+                        <option value="" disabled selected>Pilih Jadwal Dulu...</option>
+                    </select>
+                </div>
+                <div class="form-group" style="flex: 0.8;">
                     <label class="form-label">STATUS</label>
                     <select id="input-status" class="form-control" required>
                         <option value="" disabled selected>Pilih...</option>
@@ -31,24 +41,53 @@
                         <option value="Alpa">Alpa</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary"><i class="ph ph-plus-circle"></i> Simpan</button>
+                <button type="submit" class="btn btn-primary" style="height: 42px;">
+                    <i class="ph ph-check-circle"></i> Simpan
+                </button>
             </form>
         </div>
     </div>
 
     <div class="card data-table-card">
-        <div class="card-header">
+        <div class="card-header"
+            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
             <div>
-                <h2>Rekap Kehadiran</h2>
+                <h2>Rekapitulasi Kehadiran</h2>
             </div>
-            <button class="btn btn-outline" id="btn-ekspor"><i class="ph ph-download-simple"></i> Unduh Laporan
-                (CSV)</button>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <select id="filter-kelas-presensi" class="form-control"
+                    style="width: auto; height: 38px; border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; cursor: pointer;">
+                    <option value="Semua">Semua Kelas</option>
+                    <option value="1A">Kelas 1A</option>
+                    <option value="1B">Kelas 1B</option>
+                    <option value="1C">Kelas 1C</option>
+                    <option value="2A">Kelas 2A</option>
+                    <option value="2B">Kelas 2B</option>
+                    <option value="2C">Kelas 2C</option>
+                    <option value="3A">Kelas 3A</option>
+                    <option value="3B">Kelas 3B</option>
+                    <option value="3C">Kelas 3C</option>
+                    <option value="4A">Kelas 4A</option>
+                    <option value="4B">Kelas 4B</option>
+                    <option value="4C">Kelas 4C</option>
+                    <option value="5A">Kelas 5A</option>
+                    <option value="5B">Kelas 5B</option>
+                    <option value="5C">Kelas 5C</option>
+                    <option value="6A">Kelas 6A</option>
+                    <option value="6B">Kelas 6B</option>
+                    <option value="6C">Kelas 6C</option>
+                </select>
+                <button class="btn btn-outline" id="btn-ekspor-presensi" style="height: 38px;">
+                    <i class="ph ph-download-simple"></i> Ekspor (CSV)
+                </button>
+            </div>
         </div>
         <div class="table-responsive">
             <table id="tabel-presensi">
                 <thead>
                     <tr>
                         <th>Tanggal</th>
+                        <th>Mapel & Kelas</th>
                         <th>Nama Siswa</th>
                         <th>Status</th>
                         <th style="text-align: right;">Aksi</th>
