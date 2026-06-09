@@ -3,7 +3,6 @@
 // Semua operasi simpan & ambil data dipusatkan di sini.
 // ==========================================
 
-// Fungsi internal penambah ID otomatis untuk keamanan hapus data
 const injeksiID = (arrayData) => {
     let diubah = false;
     const hasil = arrayData.map(item => {
