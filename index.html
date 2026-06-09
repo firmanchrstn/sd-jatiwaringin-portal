@@ -4,62 +4,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+        content="Portal Guru SD Jatiwaringin 1. Sistem Informasi Akademik untuk manajemen presensi, nilai, dan direktori siswa terpusat.">
+    <meta name="theme-color" content="#4F46E5">
     <title>Portal Guru - Sistem Informasi SD Jatiwaringin 1</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-
     <link rel="stylesheet" href="css/style.css">
+
+    <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
 </head>
 
 <body>
     <div class="app-container">
 
-        <aside class="sidebar">
+        <aside class="sidebar" aria-label="Bilah Navigasi Utama">
 
             <div class="sidebar-header">
-                <div class="logo-box">
+                <div class="logo-box" aria-hidden="true">
                     <i class="ph-fill ph-graduation-cap"></i>
                 </div>
                 <div class="logo-text">
                     <h2>SD Jatiwaringin 1</h2>
+                    <p>sdnjatiwaringin01@gmail.com</p>
                 </div>
             </div>
 
             <div class="sidebar-content">
                 <p class="menu-label">MENU UTAMA</p>
-                <nav class="nav-menu">
-                    <a href="#" class="nav-item active" data-target="dashboard">
-                        <i class="ph ph-squares-four"></i> Dashboard
+                <nav class="nav-menu" aria-label="Menu Aplikasi">
+                    <a href="#" class="nav-item active" data-target="dashboard" aria-label="Buka Dashboard">
+                        <i class="ph ph-squares-four" aria-hidden="true"></i> Dashboard
                     </a>
-                    <a href="#" class="nav-item" data-target="kelas">
-                        <i class="ph ph-chalkboard-teacher"></i> Kelas Saya
+                    <a href="#" class="nav-item" data-target="kelas" aria-label="Buka Kelas Saya">
+                        <i class="ph ph-chalkboard-teacher" aria-hidden="true"></i> Kelas Saya
                     </a>
-                    <a href="#" class="nav-item" data-target="siswa">
-                        <i class="ph ph-users"></i> Data Siswa
+                    <a href="#" class="nav-item" data-target="siswa" aria-label="Buka Data Siswa">
+                        <i class="ph ph-users" aria-hidden="true"></i> Data Siswa
                     </a>
-                    <a href="#" class="nav-item" data-target="presensi">
-                        <i class="ph ph-check-square-offset"></i> Absensi Harian
+                    <a href="#" class="nav-item" data-target="presensi" aria-label="Buka Absensi Harian">
+                        <i class="ph ph-check-square-offset" aria-hidden="true"></i> Absensi Harian
                     </a>
-                    <a href="#" class="nav-item" data-target="nilai">
-                        <i class="ph ph-exam"></i> Nilai Akademik
+                    <a href="#" class="nav-item" data-target="nilai" aria-label="Buka Nilai Akademik">
+                        <i class="ph ph-exam" aria-hidden="true"></i> Nilai Akademik
                     </a>
-                    <a href="#" class="nav-item" data-target="kaldik">
-                        <i class="ph ph-calendar-check"></i> Kalender Pendidikan
+                    <a href="#" class="nav-item" data-target="kaldik" aria-label="Buka Kalender Pendidikan">
+                        <i class="ph ph-calendar-check" aria-hidden="true"></i> Kalender Pendidikan
                     </a>
                 </nav>
             </div>
 
             <div class="sidebar-footer">
-                <button class="btn btn-outline w-100 mb-4" id="btn-info-sekolah" style="justify-content: center;">
-                    <i class="ph ph-buildings"></i> Profil Sekolah
+                <button class="btn btn-outline w-100 mb-4" id="btn-info-sekolah" style="justify-content: center;"
+                    aria-label="Lihat Profil Sekolah">
+                    <i class="ph ph-buildings" aria-hidden="true"></i> Profil Sekolah
                 </button>
-                <a href="#" class="nav-item" data-target="pengaturan" id="btn-pengaturan">
-                    <i class="ph ph-gear"></i> Pengaturan
+                <a href="#" class="nav-item" data-target="pengaturan" id="btn-pengaturan"
+                    aria-label="Buka Pengaturan Sistem">
+                    <i class="ph ph-gear" aria-hidden="true"></i> Pengaturan
                 </a>
-                <a href="#" class="nav-item text-danger" id="btn-keluar">
-                    <i class="ph ph-sign-out"></i> Keluar Sesi
+                <a href="#" class="nav-item text-danger" id="btn-keluar" aria-label="Keluar dari Sesi">
+                    <i class="ph ph-sign-out" aria-hidden="true"></i> Keluar Sesi
                 </a>
             </div>
         </aside>
@@ -69,38 +78,40 @@
             <header class="top-nav">
 
                 <div class="search-bar">
-                    <i class="ph ph-magnifying-glass"></i>
-                    <input type="text" id="input-pencarian" placeholder="Pencarian cepat di modul aktif...">
+                    <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
+                    <input type="text" id="input-pencarian" placeholder="Pencarian cepat di modul aktif..."
+                        aria-label="Kolom Pencarian Global">
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-button notification" id="btn-notifikasi">
-                        <i class="ph ph-bell"></i>
+                    <button class="icon-button notification" id="btn-notifikasi" aria-label="Buka Panel Notifikasi">
+                        <i class="ph ph-bell" aria-hidden="true"></i>
                         <span class="indicator"></span>
                     </button>
 
                     <div class="divider"></div>
 
-                    <div class="user-profile" id="btn-profil">
-                        <div class="avatar">GP</div>
+                    <div class="user-profile" id="btn-profil" role="button" aria-label="Buka Profil Pengguna"
+                        tabindex="0">
+                        <div class="avatar" aria-hidden="true">GP</div>
                         <div class="user-info">
                             <span class="user-name">Guru Pengajar</span>
                             <span class="user-role">Wali Kelas 4B</span>
                         </div>
-                        <i class="ph ph-caret-down"></i>
+                        <i class="ph ph-caret-down" aria-hidden="true"></i>
                     </div>
                 </div>
             </header>
 
-            <div class="dashboard-wrapper" id="app-content">
+            <div class="dashboard-wrapper" id="app-content" role="region" aria-live="polite">
             </div>
 
         </main>
     </div>
 
-    <div id="toast-container" class="toast-container"></div>
+    <div id="toast-container" class="toast-container" aria-live="assertive"></div>
 
-    <script src="js/app.js"></script>
+    <script src="js/app.js" defer></script>
 </body>
 
 </html>
