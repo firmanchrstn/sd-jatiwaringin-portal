@@ -1,10 +1,56 @@
 import { formatTglBaku, tampilkanToast, mengunduhFileCSV, sanitize } from './utils.js';
 import { DB } from './database.js';
+import { Auth } from './auth.js'; // <-- Impor Modul Autentikasi ditambahkan
 
 // Mendaftarkan fungsi ke window agar bisa dipanggil dari HTML (onclick)
 window.tampilkanToast = tampilkanToast;
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    // ==========================================
+    // SISTEM PENGAMAN (ROUTE GUARD & LOGIN)
+    // ==========================================
+    const loginScreen = document.getElementById('login-screen');
+    const mainApp = document.getElementById('main-app');
+
+    // Logika Form Login
+    const formLogin = document.getElementById('form-login');
+    if (formLogin) {
+        formLogin.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+
+            const btnSubmit = formLogin.querySelector('button');
+            btnSubmit.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Memverifikasi...';
+
+            setTimeout(() => {
+                if (Auth.login(email, pass)) {
+                    tampilkanToast('Berhasil masuk! Mengalihkan...', 'success');
+                    setTimeout(() => window.location.reload(), 1000);
+                } else {
+                    tampilkanToast('Email atau Password salah!', 'danger');
+                    btnSubmit.innerHTML = '<i class="ph ph-sign-in"></i> Masuk Sistem';
+                }
+            }, 800); // Simulasi jeda loading jaringan
+        });
+    }
+
+    // Jika belum login, hentikan eksekusi aplikasi dan paksa di layar login
+    if (!Auth.isLoggedIn()) {
+        if (loginScreen) loginScreen.style.display = 'flex';
+        if (mainApp) mainApp.style.display = 'none';
+        return;
+    }
+
+    // Jika sudah login, sembunyikan layar login dan tampilkan aplikasi utama
+    if (loginScreen) loginScreen.style.display = 'none';
+    if (mainApp) mainApp.style.display = 'flex';
+
+
+    // ==========================================
+    // APLIKASI UTAMA (SETELAH LOGIN)
+    // ==========================================
 
     const terapkanTemaGlobal = () => {
         const p = DB.getProfil();
@@ -426,7 +472,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // NAVIGASI STATIS LAINNYA
     document.getElementById('btn-profil')?.addEventListener('click', () => bukaModul('pengaturan'));
     document.getElementById('btn-info-sekolah')?.addEventListener('click', () => bukaModul('info'));
-    document.getElementById('btn-keluar')?.addEventListener('click', (e) => { e.preventDefault(); if (confirm("Keluar dari Portal?")) tampilkanToast('Sesi diakhiri.', 'success'); });
+
+    // Tombol Keluar dengan Autentikasi
+    document.getElementById('btn-keluar')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (confirm("Apakah Anda yakin ingin keluar sesi?")) {
+            Auth.logout();
+        }
+    });
 
     document.getElementById('btn-notifikasi')?.addEventListener('click', () => {
         const agenda = DB.getKaldik().filter(k => k.tanggal >= formatTglBaku(new Date())).sort((a, b) => a.tanggal.localeCompare(b.tanggal))[0];
