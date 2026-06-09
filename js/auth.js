@@ -1,30 +1,25 @@
-// ==========================================
-// AUTENTIKASI (LOGIN SYSTEM)
-// ==========================================
+// Logika Form Login
+const formLogin = document.getElementById('form-login');
+if (formLogin) {
+    formLogin.addEventListener('submit', async (e) => { // <-- Perhatikan tambahan kata 'async'
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-pass').value;
 
-export const Auth = {
-    // Mengecek apakah ada token aktif di browser
-    isLoggedIn: () => {
-        return localStorage.getItem('auth_token') === 'guru_aktif_123';
-    },
+        const btnSubmit = formLogin.querySelector('button');
+        btnSubmit.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Memverifikasi Server...';
+        btnSubmit.disabled = true; // Kunci tombol agar tidak diklik dua kali
 
-    // Simulasi pengecekan ke database (Untuk mode demo)
-    login: (email, password) => {
-        // Kredensial Demo (Nanti ini diganti dengan Firebase Auth)
-        const emailValid = 'guru@sdnjatiwaringin.id';
-        const passValid = 'admin123';
-
-        if (email === emailValid && password === passValid) {
-            // Berikan token tanda masuk
-            localStorage.setItem('auth_token', 'guru_aktif_123');
-            return true;
+        try {
+            // Menunggu respons dari server Firebase
+            await Auth.login(email, pass);
+            tampilkanToast('Otorisasi Firebase Berhasil! Mengalihkan...', 'success');
+            setTimeout(() => window.location.reload(), 1200);
+        } catch (error) {
+            // Jika password salah atau email tidak ada di Firebase
+            tampilkanToast('Akses Ditolak! Kredensial tidak valid.', 'danger');
+            btnSubmit.innerHTML = '<i class="ph ph-sign-in"></i> Masuk Sistem';
+            btnSubmit.disabled = false;
         }
-        return false;
-    },
-
-    // Menghapus sesi dan me-refresh halaman
-    logout: () => {
-        localStorage.removeItem('auth_token');
-        window.location.reload();
-    }
-};
+    });
+}
