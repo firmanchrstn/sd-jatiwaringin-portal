@@ -7,14 +7,18 @@ import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/fireb
 
 // 2. Kunci Konfigurasi Rahasia Anda
 const firebaseConfig = {
-    apiKey: "AIzaSyAoZBjalA_pl8xYLCkZO31NgLyv2fOreKk",
-    authDomain: "sd-jatiwaringin-1.firebaseapp.com",
-    projectId: "sd-jatiwaringin-1",
-    storageBucket: "sd-jatiwaringin-1.firebasestorage.app",
-    messagingSenderId: "669367775735",
-    appId: "1:669367775735:web:dbcb263d3f1864b2113ef2",
-    measurementId: "G-XY2ES8SD33"
+    apiKey: "AIzaSyCJ9svyRa6SdilveuOxikRZkVfRKkWaGgA",
+    authDomain: "portal-sd-jtw1.firebaseapp.com",
+    projectId: "portal-sd-jtw1",
+    storageBucket: "portal-sd-jtw1.firebasestorage.app",
+    messagingSenderId: "666787945691",
+    appId: "1:666787945691:web:2e578c5e95c49708f2c0fe",
+    measurementId: "G-2B4J333RKW"
 };
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 // 3. Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
