@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginScreen = document.getElementById('login-screen');
     const mainApp = document.getElementById('main-app');
 
-    // Logika Form Login
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
         formLogin.addEventListener('submit', async (e) => {
@@ -96,6 +95,112 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    // FUNGSI POP-UP DETAIL AGENDA (Dipanggil dari Dasbor)
+    window.bukaModalDetailAgenda = (id) => {
+        let dbKaldik = DB.getKaldik();
+        let agenda = dbKaldik.find(k => k.id === id);
+        if (!agenda) return;
+
+        let modal = document.getElementById('modal-agenda-detail');
+        if (!modal) {
+            modal = document.createElement('div');
+            modal.id = 'modal-agenda-detail';
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(3px); opacity: 0; transition: opacity 0.2s;';
+            document.body.appendChild(modal);
+        }
+
+        modal.innerHTML = `
+            <div class="card" style="width: 90%; max-width: 450px; padding: 24px; position: relative; transform: translateY(20px); transition: transform 0.2s;">
+                <button id="modal-close-btn" class="btn-icon-only text-danger" style="position: absolute; top: 16px; right: 16px;"><i class="ph ph-x"></i></button>
+                <h2 style="font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;"><i class="ph ph-calendar-check" style="color: var(--color-primary); font-size: 24px;"></i> Detail Agenda</h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <div class="form-group">
+                        <label class="form-label">TANGGAL MULAI</label>
+                        <input type="date" id="modal-inp-tgl" class="form-control" value="${agenda.tanggal}" disabled style="color: var(--color-text-main); opacity: 1;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">TANGGAL SELESAI</label>
+                        <input type="date" id="modal-inp-tglakhir" class="form-control" value="${agenda.tanggal_akhir || agenda.tanggal}" disabled style="color: var(--color-text-main); opacity: 1;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">NAMA KEGIATAN</label>
+                        <input type="text" id="modal-inp-keg" class="form-control" value="${sanitize(agenda.kegiatan)}" disabled style="color: var(--color-text-main); opacity: 1;">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">KETERANGAN / DETAIL</label>
+                        <textarea id="modal-inp-ket" class="form-control" disabled style="color: var(--color-text-main); opacity: 1; resize: none; height: 80px;">${sanitize(agenda.ket || '')}</textarea>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button id="modal-btn-edit" class="btn btn-outline" style="flex: 1; justify-content: center;"><i class="ph ph-pencil-simple"></i> Edit Data</button>
+                    <button id="modal-btn-save" class="btn btn-primary" style="flex: 1; justify-content: center; display: none;" disabled><i class="ph ph-floppy-disk"></i> Simpan Perubahan</button>
+                </div>
+            </div>
+        `;
+
+        // Animasi Tampil
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.querySelector('.card').style.transform = 'translateY(0)';
+        }, 10);
+
+        // Animasi Tutup
+        const tutupModal = () => {
+            modal.style.opacity = '0';
+            modal.querySelector('.card').style.transform = 'translateY(20px)';
+            setTimeout(() => modal.style.display = 'none', 200);
+        };
+
+        document.getElementById('modal-close-btn').onclick = tutupModal;
+
+        // Logika Mode Edit & Simpan
+        const btnEdit = document.getElementById('modal-btn-edit');
+        const btnSave = document.getElementById('modal-btn-save');
+        const inputs = [
+            document.getElementById('modal-inp-tgl'),
+            document.getElementById('modal-inp-tglakhir'),
+            document.getElementById('modal-inp-keg'),
+            document.getElementById('modal-inp-ket')
+        ];
+
+        const valAsli = [agenda.tanggal, agenda.tanggal_akhir || agenda.tanggal, agenda.kegiatan, agenda.ket || ''];
+
+        btnEdit.onclick = () => {
+            inputs.forEach(i => i.disabled = false);
+            inputs[2].focus(); // Fokus ke nama kegiatan
+            btnEdit.style.display = 'none';
+            btnSave.style.display = 'flex';
+        };
+
+        const cekPerubahan = () => {
+            const adaBerubah = inputs[0].value !== valAsli[0] || inputs[1].value !== valAsli[1] || inputs[2].value !== valAsli[2] || inputs[3].value !== valAsli[3];
+            btnSave.disabled = !adaBerubah;
+        };
+
+        inputs.forEach(i => i.addEventListener('input', cekPerubahan));
+
+        btnSave.onclick = () => {
+            if (inputs[1].value < inputs[0].value) return tampilkanToast('Peringatan: Tanggal Selesai harus sesudah Tanggal Mulai!', 'danger');
+
+            agenda.tanggal = inputs[0].value;
+            agenda.tanggal_akhir = inputs[1].value;
+            agenda.kegiatan = sanitize(inputs[2].value);
+            agenda.ket = sanitize(inputs[3].value);
+
+            const index = dbKaldik.findIndex(k => k.id === id);
+            if (index > -1) {
+                dbKaldik[index] = agenda;
+                DB.setKaldik(dbKaldik);
+                tutupModal();
+                tampilkanToast('Perubahan agenda berhasil disimpan.', 'success');
+                inisialisasiHalaman('dashboard'); // Segarkan daftar agenda di dasbor
+            }
+        };
+    };
+
     const inisialisasiHalaman = (namaView) => {
 
         // --- A. DASBOR ---
@@ -139,8 +244,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const teksRentang = (item.tanggal !== (item.tanggal_akhir || item.tanggal)) ? `<span style="font-size:11px; background:var(--color-primary-light); color:var(--color-primary); padding:2px 6px; border-radius:4px; margin-left:8px; display:inline-block; vertical-align:middle;">s.d. ${tglAkhirObj.getDate()} ${tglAkhirObj.toLocaleDateString('id-ID', { month: 'short' })}</span>` : '';
 
+                        // Menambahkan efek hover dan kursor pointer pada daftar agenda Dasbor
                         containerKaldik.insertAdjacentHTML('beforeend', `
-                            <div style="display: flex; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border);">
+                            <div class="agenda-item-dash" data-id="${item.id}" style="display: flex; gap: 16px; padding: 12px; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: background 0.2s; border-radius: 8px;" title="Klik untuk lihat detail">
                                 <div style="background: ${bgWarna}; color: ${txtWarna}; padding: 8px 16px; border-radius: 8px; font-weight: bold; text-align: center; min-width: 70px;">
                                     ${bulanSingkat}<br><span style="font-size: 20px;">${tglObj.getDate()}</span>
                                 </div>
@@ -150,6 +256,13 @@ document.addEventListener('DOMContentLoaded', () => {
                                 </div>
                             </div>
                         `);
+                    });
+
+                    // Menyematkan fungsi klik untuk Pop-up Detail
+                    document.querySelectorAll('.agenda-item-dash').forEach(el => {
+                        el.addEventListener('mouseenter', () => el.style.background = 'var(--color-background)');
+                        el.addEventListener('mouseleave', () => el.style.background = 'transparent');
+                        el.addEventListener('click', () => bukaModalDetailAgenda(parseInt(el.getAttribute('data-id'))));
                     });
                 }
             }
@@ -161,13 +274,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let bulanAktif = new Date().getMonth(); let tahunAktif = new Date().getFullYear();
             let tanggalTerpilih = formatTglBaku(new Date());
 
-            // FUNGSI BARU: Render Semua Agenda ke Tabel
             const renderSemuaAgenda = () => {
                 const tbody = document.getElementById('body-semua-agenda');
                 if (!tbody) return;
                 tbody.innerHTML = '';
 
-                // Urutkan agenda berdasarkan tanggal paling awal
                 const semuaData = [...dbKaldik].sort((a, b) => a.tanggal.localeCompare(b.tanggal));
 
                 if (semuaData.length === 0) {
@@ -269,7 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 e.preventDefault();
                 const tglMulai = document.getElementById('kaldik-input-tgl').value;
                 const elTglAkhir = document.getElementById('kaldik-input-tgl-akhir');
-
                 let tglAkhir = (elTglAkhir && elTglAkhir.value) ? elTglAkhir.value : tglMulai;
 
                 if (tglAkhir < tglMulai) return tampilkanToast('Peringatan: Tanggal Selesai harus setelah Tanggal Mulai!', 'danger');
@@ -287,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('kaldik-input-tgl').value = tanggalTerpilih;
                 renderKalender();
                 renderPanelKanan();
-                renderSemuaAgenda(); // Perbarui tabel list semua agenda
+                renderSemuaAgenda();
                 tampilkanToast(`Agenda disimpan.`, 'success');
             });
 
@@ -297,14 +407,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     DB.setKaldik(dbKaldik);
                     renderKalender();
                     renderPanelKanan();
-                    renderSemuaAgenda(); // Perbarui tabel list semua agenda
+                    renderSemuaAgenda();
                     tampilkanToast(`Agenda dihapus.`, 'warning');
                 }
             };
 
             renderKalender();
             renderPanelKanan();
-            renderSemuaAgenda(); // Panggil fungsi saat halaman pertama dimuat
+            renderSemuaAgenda();
         }
 
         // --- C. PRESENSI ---
@@ -559,7 +669,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-profil')?.addEventListener('click', () => bukaModul('pengaturan'));
     document.getElementById('btn-info-sekolah')?.addEventListener('click', () => bukaModul('info'));
 
-    // Tombol Keluar dengan Autentikasi
     document.getElementById('btn-keluar')?.addEventListener('click', (e) => {
         e.preventDefault();
         if (confirm("Apakah Anda yakin ingin keluar sesi?")) {
