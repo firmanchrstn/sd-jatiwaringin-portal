@@ -1016,4 +1016,30 @@ input:checked+.slider:before {
 .login-form .form-group {
     text-align: left;
     margin-bottom: 16px;
-}   
+}
+
+/* Styling Tombol Tutup Pop-up Profesional */
+#modal-close-btn {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--color-background);
+    color: var(--color-text-muted);
+    transition: var(--transition);
+    border: none;
+    cursor: pointer;
+}
+
+#modal-close-btn:hover {
+    background: var(--color-danger-bg);
+    color: var(--color-danger);
+    transform: rotate(90deg);
+    /* Efek putar halus */
+}
+
+#modal-close-btn i {
+    font-size: 18px;
+}
