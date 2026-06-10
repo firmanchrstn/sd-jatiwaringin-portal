@@ -1043,3 +1043,21 @@ input:checked+.slider:before {
 #modal-close-btn i {
     font-size: 18px;
 }
+
+/* Animasi Cloud Sync */
+@keyframes pulse-sync {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.5;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

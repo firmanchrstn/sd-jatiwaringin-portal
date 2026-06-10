@@ -141,14 +141,12 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         `;
 
-        // Animasi Tampil
         modal.style.display = 'flex';
         setTimeout(() => {
             modal.style.opacity = '1';
             modal.querySelector('.card').style.transform = 'translateY(0)';
         }, 10);
 
-        // Animasi Tutup
         const tutupModal = () => {
             modal.style.opacity = '0';
             modal.querySelector('.card').style.transform = 'translateY(20px)';
@@ -157,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('modal-close-btn').onclick = tutupModal;
 
-        // Logika Mode Edit & Simpan
         const btnEdit = document.getElementById('modal-btn-edit');
         const btnCancel = document.getElementById('modal-btn-cancel');
         const btnSave = document.getElementById('modal-btn-save');
@@ -168,36 +165,29 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modal-inp-ket')
         ];
 
-        // Menyimpan nilai original sebelum diedit
         const valAsli = [agenda.tanggal, agenda.tanggal_akhir || agenda.tanggal, agenda.kegiatan, agenda.ket || ''];
 
-        // Saat Tombol Edit Ditekan
         btnEdit.onclick = () => {
             inputs.forEach(i => i.disabled = false);
             inputs[2].focus();
             btnEdit.style.display = 'none';
-            btnCancel.style.display = 'flex'; // Munculkan Batal
-            btnSave.style.display = 'flex';   // Munculkan Simpan
+            btnCancel.style.display = 'flex';
+            btnSave.style.display = 'flex';
         };
 
-        // Saat Tombol Batal Ditekan
         btnCancel.onclick = () => {
-            // 1. Kembalikan ketikan ke nilai asli
             inputs[0].value = valAsli[0];
             inputs[1].value = valAsli[1];
             inputs[2].value = valAsli[2];
             inputs[3].value = valAsli[3];
 
-            // 2. Kunci kembali inputnya
             inputs.forEach(i => i.disabled = true);
 
-            // 3. Kembalikan susunan tombol
             btnCancel.style.display = 'none';
             btnSave.style.display = 'none';
             btnEdit.style.display = 'flex';
         };
 
-        // Deteksi jika pengguna sedang mengetik
         const cekPerubahan = () => {
             const adaBerubah = inputs[0].value !== valAsli[0] || inputs[1].value !== valAsli[1] || inputs[2].value !== valAsli[2] || inputs[3].value !== valAsli[3];
             btnSave.disabled = !adaBerubah;
@@ -205,7 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         inputs.forEach(i => i.addEventListener('input', cekPerubahan));
 
-        // Saat Tombol Simpan Ditekan
         btnSave.onclick = () => {
             if (inputs[1].value < inputs[0].value) return tampilkanToast('Peringatan: Tanggal Selesai harus sesudah Tanggal Mulai!', 'danger');
 
@@ -268,7 +257,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         const teksRentang = (item.tanggal !== (item.tanggal_akhir || item.tanggal)) ? `<span style="font-size:11px; background:var(--color-primary-light); color:var(--color-primary); padding:2px 6px; border-radius:4px; margin-left:8px; display:inline-block; vertical-align:middle;">s.d. ${tglAkhirObj.getDate()} ${tglAkhirObj.toLocaleDateString('id-ID', { month: 'short' })}</span>` : '';
 
-                        // Menambahkan efek hover dan kursor pointer pada daftar agenda Dasbor
                         containerKaldik.insertAdjacentHTML('beforeend', `
                             <div class="agenda-item-dash" data-id="${item.id}" style="display: flex; gap: 16px; padding: 12px; border-bottom: 1px solid var(--color-border); cursor: pointer; transition: background 0.2s; border-radius: 8px;" title="Klik untuk lihat detail">
                                 <div style="background: ${bgWarna}; color: ${txtWarna}; padding: 8px 16px; border-radius: 8px; font-weight: bold; text-align: center; min-width: 70px;">
@@ -282,7 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         `);
                     });
 
-                    // Menyematkan fungsi klik untuk Pop-up Detail
                     document.querySelectorAll('.agenda-item-dash').forEach(el => {
                         el.addEventListener('mouseenter', () => el.style.background = 'var(--color-background)');
                         el.addEventListener('mouseleave', () => el.style.background = 'transparent');
@@ -425,16 +412,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 tampilkanToast(`Agenda disimpan.`, 'success');
             });
 
-            window.hapusKaldik = (idKaldik) => {
-                if (confirm('Hapus agenda ini?')) {
-                    dbKaldik = dbKaldik.filter(k => k.id !== idKaldik);
-                    DB.setKaldik(dbKaldik);
-                    renderKalender();
-                    renderPanelKanan();
-                    renderSemuaAgenda();
-                    tampilkanToast(`Agenda dihapus.`, 'warning');
-                }
-            };
+            if (!window.hapusKaldik) {
+                window.hapusKaldik = (idKaldik) => {
+                    if (confirm('Hapus agenda ini?')) {
+                        dbKaldik = dbKaldik.filter(k => k.id !== idKaldik);
+                        DB.setKaldik(dbKaldik);
+                        renderKalender();
+                        renderPanelKanan();
+                        renderSemuaAgenda();
+                        tampilkanToast(`Agenda dihapus.`, 'warning');
+                    }
+                };
+            }
 
             renderKalender();
             renderPanelKanan();
@@ -496,7 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderTabelPresensi(); tampilkanToast(`Kehadiran disimpan.`, 'success');
             });
 
-            window.hapusDataPresensi = (id) => { if (confirm('Hapus data ini?')) { dataPresensi = dataPresensi.filter(p => p.id !== id); DB.setPresensi(dataPresensi); renderTabelPresensi(); tampilkanToast(`Data dihapus.`, 'warning'); } };
+            if (!window.hapusDataPresensi) {
+                window.hapusDataPresensi = (id) => { if (confirm('Hapus data ini?')) { dataPresensi = dataPresensi.filter(p => p.id !== id); DB.setPresensi(dataPresensi); renderTabelPresensi(); tampilkanToast(`Data dihapus.`, 'warning'); } };
+            }
 
             document.getElementById('btn-ekspor-presensi')?.addEventListener('click', function () {
                 let d = dataPresensi; const k = filterKelasPresensi ? filterKelasPresensi.value : 'Semua';
@@ -541,7 +532,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (waAktif) tampilkanToast(`Bot WA akan mengirim pengingat ke ${p.wa}.`, 'success'); else tampilkanToast(`Jadwal ditambahkan.`, 'success');
             });
 
-            window.hapusDataKelas = (id) => { if (confirm('Hapus jadwal ini?')) { dataKelas = dataKelas.filter(k => k.id !== id); DB.setKelas(dataKelas); renderGridKelas(); } };
+            if (!window.hapusDataKelas) {
+                window.hapusDataKelas = (id) => { if (confirm('Hapus jadwal ini?')) { dataKelas = dataKelas.filter(k => k.id !== id); DB.setKelas(dataKelas); renderGridKelas(); } };
+            }
             renderGridKelas();
         }
 
@@ -566,11 +559,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('form-tambah-siswa')?.addEventListener('submit', function (e) {
                 e.preventDefault();
-                dataSiswa.push({ id: Date.now().toString(), nama: sanitize(document.getElementById('s-nama').value), jk: document.getElementById('s-jk').value, kelas: document.getElementById('s-kelas').value, nik: sanitize(document.getElementById('s-nik').value), ayah: sanitize(document.getElementById('s-ayah').value), tmplahir: '', tgllahir: '', agama: '', kk: '', kerjaayah: '', ibu: '', kerjaibu: '', alamat: '' });
-                DB.setSiswa(dataSiswa); this.reset(); if (filterKelas) filterKelas.value = 'Semua'; renderTabelSiswa(); tampilkanToast(`Data siswa didaftarkan.`, 'success');
+
+                // Validasi NIK Ganda
+                const nikSiswa = sanitize(document.getElementById('s-nik').value);
+                if (dataSiswa.some(s => s.nik === nikSiswa)) {
+                    return tampilkanToast(`Gagal! NIK ${nikSiswa} sudah terdaftar.`, 'danger');
+                }
+
+                dataSiswa.push({ id: Date.now().toString(), nama: sanitize(document.getElementById('s-nama').value), jk: document.getElementById('s-jk').value, kelas: document.getElementById('s-kelas').value, nik: nikSiswa, ayah: sanitize(document.getElementById('s-ayah').value), tmplahir: '', tgllahir: '', agama: '', kk: '', kerjaayah: '', ibu: '', kerjaibu: '', alamat: '' });
+                DB.setSiswa(dataSiswa);
+                this.reset();
+                if (filterKelas) filterKelas.value = 'Semua';
+                renderTabelSiswa();
+                tampilkanToast(`Data siswa didaftarkan.`, 'success');
             });
 
-            window.hapusDataSiswa = (id) => { if (confirm('Hapus siswa ini?')) { dataSiswa = dataSiswa.filter(s => s.id !== id); DB.setSiswa(dataSiswa); renderTabelSiswa(); } };
+            if (!window.hapusDataSiswa) {
+                window.hapusDataSiswa = (id) => { if (confirm('Hapus siswa ini?')) { dataSiswa = dataSiswa.filter(s => s.id !== id); DB.setSiswa(dataSiswa); renderTabelSiswa(); } };
+            }
 
             document.getElementById('btn-ekspor-siswa')?.addEventListener('click', function () {
                 let d = dataSiswa; const k = filterKelas ? filterKelas.value : 'Semua';
@@ -616,7 +622,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 DB.setNilai(dataNilai); this.reset(); if (filterKelasNilai) filterKelasNilai.value = 'Semua'; renderTabelNilai(); tampilkanToast(`Nilai disimpan.`, 'success');
             });
 
-            window.hapusDataNilai = (id) => { if (confirm('Hapus nilai ini?')) { dataNilai = dataNilai.filter(n => n.id !== id); DB.setNilai(dataNilai); renderTabelNilai(); } };
+            if (!window.hapusDataNilai) {
+                window.hapusDataNilai = (id) => { if (confirm('Hapus nilai ini?')) { dataNilai = dataNilai.filter(n => n.id !== id); DB.setNilai(dataNilai); renderTabelNilai(); } };
+            }
 
             document.getElementById('btn-ekspor-nilai')?.addEventListener('click', function () {
                 let d = dataNilai; const k = filterKelasNilai ? filterKelasNilai.value : 'Semua';

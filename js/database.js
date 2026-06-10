@@ -3,16 +3,43 @@
 // ==========================================
 import { dbCloud, doc, setDoc } from './firebase.js';
 
-// Mengambil identitas guru yang sedang login
 const getUserEmail = () => localStorage.getItem('user_email') || 'default_user';
 
-// FUNGSI AJAIB: Mendorong data ke Cloud Firebase di Latar Belakang
-const syncToCloud = (kunci, data) => {
+// Mengubah Ikon Sinkronisasi di UI
+const setSyncStatus = (status) => {
+    const icon = document.querySelector('#cloud-sync-status i');
+    const container = document.getElementById('cloud-sync-status');
+    if (!icon) return;
+
+    if (status === 'syncing') {
+        icon.className = 'ph ph-cloud-arrow-up';
+        container.style.color = 'var(--color-warning)';
+        icon.style.animation = 'pulse-sync 1s infinite';
+        container.title = 'Sedang menyinkronkan ke Cloud...';
+    } else if (status === 'success') {
+        icon.className = 'ph ph-cloud-check';
+        container.style.color = 'var(--color-success)';
+        icon.style.animation = 'none';
+        container.title = 'Database Tersinkronisasi';
+    } else if (status === 'error') {
+        icon.className = 'ph ph-cloud-warning';
+        container.style.color = 'var(--color-danger)';
+        icon.style.animation = 'none';
+        container.title = 'Offline: Gagal sinkronisasi ke Cloud. Data tersimpan lokal.';
+    }
+};
+
+const syncToCloud = async (kunci, data) => {
     const email = getUserEmail();
     if (email !== 'default_user') {
-        setDoc(doc(dbCloud, "guru_data", email), {
-            [kunci]: data
-        }, { merge: true }).catch(err => console.error("Cloud Sync Error:", err));
+        setSyncStatus('syncing');
+        try {
+            await setDoc(doc(dbCloud, "guru_data", email), { [kunci]: data }, { merge: true });
+            setTimeout(() => setSyncStatus('success'), 800);
+        } catch (err) {
+            console.error("Cloud Sync Error:", err);
+            setSyncStatus('error');
+        }
     }
 };
 
