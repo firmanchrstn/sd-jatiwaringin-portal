@@ -125,17 +125,27 @@ document.addEventListener('DOMContentLoaded', () => {
             if (containerKaldik) {
                 containerKaldik.innerHTML = '';
                 const hariIni = formatTglBaku(new Date());
-                const agendaMendatang = DB.getKaldik().filter(k => k.tanggal >= hariIni).sort((a, b) => a.tanggal.localeCompare(b.tanggal)).slice(0, 3);
+
+                // Cek dari tanggal akhir (agar acara berhari-hari tidak hilang sebelum waktunya)
+                const agendaMendatang = DB.getKaldik()
+                    .filter(k => (k.tanggal_akhir || k.tanggal) >= hariIni)
+                    .sort((a, b) => a.tanggal.localeCompare(b.tanggal))
+                    .slice(0, 3);
 
                 if (agendaMendatang.length === 0) {
                     containerKaldik.innerHTML = '<p style="color: var(--color-text-muted); text-align: center; padding: 20px;">Tidak ada agenda dalam waktu dekat.</p>';
                 } else {
                     agendaMendatang.forEach(item => {
                         const tglObj = new Date(item.tanggal);
+                        const tglAkhirObj = new Date(item.tanggal_akhir || item.tanggal);
                         const bulanSingkat = tglObj.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase();
+
                         let bgWarna = 'var(--color-primary-light)'; let txtWarna = 'var(--color-primary)';
                         const isLibur = item.kegiatan.toLowerCase().includes('libur') || tglObj.getDay() === 0;
                         if (item.tanggal === hariIni || isLibur) { bgWarna = 'var(--color-danger-bg)'; txtWarna = 'var(--color-danger)'; }
+
+                        // Jika tanggal lebih dari 1 hari, tambahkan lencana kecil "s.d. tanggal"
+                        const teksRentang = (item.tanggal !== (item.tanggal_akhir || item.tanggal)) ? `<span style="font-size:11px; background:var(--color-primary-light); color:var(--color-primary); padding:2px 6px; border-radius:4px; margin-left:8px; display:inline-block; vertical-align:middle;">s.d. ${tglAkhirObj.getDate()} ${tglAkhirObj.toLocaleDateString('id-ID', { month: 'short' })}</span>` : '';
 
                         containerKaldik.insertAdjacentHTML('beforeend', `
                             <div style="display: flex; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--color-border);">
@@ -143,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                     ${bulanSingkat}<br><span style="font-size: 20px;">${tglObj.getDate()}</span>
                                 </div>
                                 <div style="display: flex; flex-direction: column; justify-content: center;">
-                                    <h4 style="margin-bottom: 4px; font-size: 15px; color: var(--color-text-main);">${sanitize(item.kegiatan)}</h4>
+                                    <h4 style="margin-bottom: 4px; font-size: 15px; color: var(--color-text-main); display: flex; align-items: center;">${sanitize(item.kegiatan)} ${teksRentang}</h4>
                                     <p style="color: var(--color-text-muted); font-size: 13px;">${sanitize(item.ket) || '-'}</p>
                                 </div>
                             </div>
@@ -173,7 +183,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let i = 1; i <= totalHari; i++) {
                     const dateObj = new Date(tahunAktif, bulanAktif, i);
                     const tglLooping = formatTglBaku(dateObj);
-                    const agendaAda = dbKaldik.filter(k => k.tanggal === tglLooping);
+
+                    // Filter: Memeriksa apakah tanggal looping berada di dalam rentang agenda
+                    const agendaAda = dbKaldik.filter(k => {
+                        const tglAkhir = k.tanggal_akhir || k.tanggal;
+                        return tglLooping >= k.tanggal && tglLooping <= tglAkhir;
+                    });
+
                     const titikAgenda = agendaAda.length > 0 ? `<div class="calendar-event-dot"></div>` : '';
                     let isLibur = (dateObj.getDay() === 0) || agendaAda.some(a => a.kegiatan.toLowerCase().includes('libur'));
 
@@ -194,14 +210,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (document.getElementById('kaldik-selected-date-text')) document.getElementById('kaldik-selected-date-text').textContent = `Agenda: ${new Date(tanggalTerpilih).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                 if (document.getElementById('kaldik-input-tgl')) document.getElementById('kaldik-input-tgl').value = tanggalTerpilih;
 
-                const agendaDitemukan = dbKaldik.filter(k => k.tanggal === tanggalTerpilih);
+                // Filter rentang untuk memunculkan acara di panel kanan
+                const agendaDitemukan = dbKaldik.filter(k => {
+                    const tglAkhir = k.tanggal_akhir || k.tanggal;
+                    return tanggalTerpilih >= k.tanggal && tanggalTerpilih <= tglAkhir;
+                });
+
                 if (kontainerDetail) {
                     if (agendaDitemukan.length === 0) {
                         kontainerDetail.innerHTML = `<div style="text-align: center; padding: 20px 0;"><p style="color: var(--color-text-muted);">Tidak ada jadwal/kegiatan pada tanggal ini.</p></div>`;
                     } else {
                         kontainerDetail.innerHTML = '';
                         agendaDitemukan.forEach(ag => {
-                            kontainerDetail.innerHTML += `<div style="background: var(--color-background); border: 1px solid var(--color-border); padding: 16px; border-radius: 8px; margin-bottom: 12px; position: relative;"><button class="btn-icon-only text-danger" onclick="hapusKaldik(${ag.id})" style="position: absolute; top: 12px; right: 12px;"><i class="ph ph-trash"></i></button><h3 style="font-size: 15px; margin-bottom: 4px;">${sanitize(ag.kegiatan)}</h3><p style="font-size: 13px; color: var(--color-text-muted);">${sanitize(ag.ket) || '-'}</p></div>`;
+                            const formatTgl = (t) => new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                            const tglAkhir = ag.tanggal_akhir || ag.tanggal;
+                            const labelRentang = (ag.tanggal !== tglAkhir) ? `<span style="font-size: 11px; background: var(--color-primary-light); color: var(--color-primary); padding: 4px 8px; border-radius: 6px; margin-bottom: 8px; display: inline-block; font-weight: 600;"><i class="ph ph-calendar"></i> ${formatTgl(ag.tanggal)} - ${formatTgl(tglAkhir)}</span><br>` : '';
+
+                            kontainerDetail.innerHTML += `<div style="background: var(--color-background); border: 1px solid var(--color-border); padding: 16px; border-radius: 8px; margin-bottom: 12px; position: relative;"><button class="btn-icon-only text-danger" onclick="hapusKaldik(${ag.id})" style="position: absolute; top: 12px; right: 12px;"><i class="ph ph-trash"></i></button>${labelRentang}<h3 style="font-size: 15px; margin-bottom: 4px;">${sanitize(ag.kegiatan)}</h3><p style="font-size: 13px; color: var(--color-text-muted);">${sanitize(ag.ket) || '-'}</p></div>`;
                         });
                     }
                 }
@@ -212,9 +237,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.getElementById('form-tambah-kaldik')?.addEventListener('submit', function (e) {
                 e.preventDefault();
-                dbKaldik.push({ id: Date.now(), tanggal: document.getElementById('kaldik-input-tgl').value, kegiatan: sanitize(document.getElementById('kaldik-input-kegiatan').value), ket: sanitize(document.getElementById('kaldik-input-ket').value) });
-                DB.setKaldik(dbKaldik); this.reset(); document.getElementById('kaldik-input-tgl').value = tanggalTerpilih;
-                renderKalender(); renderPanelKanan(); tampilkanToast(`Agenda ditambahkan.`, 'success');
+                const tglMulai = document.getElementById('kaldik-input-tgl').value;
+                const elTglAkhir = document.getElementById('kaldik-input-tgl-akhir');
+
+                // Jika input akhir kosong, anggap saja acara cuma 1 hari (samakan dengan tglMulai)
+                let tglAkhir = (elTglAkhir && elTglAkhir.value) ? elTglAkhir.value : tglMulai;
+
+                if (tglAkhir < tglMulai) return tampilkanToast('Peringatan: Tanggal Selesai harus sesudah Tanggal Mulai!', 'danger');
+
+                dbKaldik.push({
+                    id: Date.now(),
+                    tanggal: tglMulai,
+                    tanggal_akhir: tglAkhir,
+                    kegiatan: sanitize(document.getElementById('kaldik-input-kegiatan').value),
+                    ket: sanitize(document.getElementById('kaldik-input-ket').value)
+                });
+
+                DB.setKaldik(dbKaldik);
+                this.reset();
+                document.getElementById('kaldik-input-tgl').value = tanggalTerpilih;
+                renderKalender();
+                renderPanelKanan();
+                tampilkanToast(`Agenda disimpan.`, 'success');
             });
 
             window.hapusKaldik = (idKaldik) => {

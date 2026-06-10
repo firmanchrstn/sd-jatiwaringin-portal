@@ -50,11 +50,18 @@
                     <form id="form-tambah-kaldik" style="display: flex; flex-direction: column; gap: 16px;">
 
                         <div class="form-group">
-                            <label class="form-label">TANGGAL AGENDA</label>
+                            <label class="form-label">TANGGAL MULAI AGENDA</label>
                             <input type="date" id="kaldik-input-tgl" class="form-control" required readonly
                                 style="background: var(--color-background); cursor: not-allowed; color: var(--color-text-muted);">
                             <small style="font-size: 11px; color: var(--color-primary); margin-top: 4px;">*Klik tanggal
                                 di kalender untuk mengubah</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">TANGGAL SELESAI (OPSIONAL)</label>
+                            <input type="date" id="kaldik-input-tgl-akhir" class="form-control">
+                            <small style="font-size: 11px; color: var(--color-text-muted); margin-top: 4px;">*Kosongkan
+                                jika acara hanya 1 hari</small>
                         </div>
 
                         <div class="form-group">
