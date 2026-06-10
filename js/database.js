@@ -10,7 +10,6 @@ const getUserEmail = () => localStorage.getItem('user_email') || 'default_user';
 const syncToCloud = (kunci, data) => {
     const email = getUserEmail();
     if (email !== 'default_user') {
-        // Simpan ke koleksi "guru_data", dokumen atas nama email guru tersebut
         setDoc(doc(dbCloud, "guru_data", email), {
             [kunci]: data
         }, { merge: true }).catch(err => console.error("Cloud Sync Error:", err));
@@ -75,7 +74,6 @@ export const DB = {
     resetData: () => {
         if (confirm("PERINGATAN FATAL!\n\nHapus seluruh database sistem?")) {
             ['db_presensi', 'db_kelas', 'db_siswa', 'db_nilai', 'db_kaldik'].forEach(k => localStorage.removeItem(k));
-            // Kosongkan juga data di Cloud!
             syncToCloud('presensi', []); syncToCloud('kelas', []); syncToCloud('siswa', []); syncToCloud('nilai', []); syncToCloud('kaldik', []);
             return true;
         }

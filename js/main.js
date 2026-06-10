@@ -1,6 +1,6 @@
 import { formatTglBaku, tampilkanToast, mengunduhFileCSV, sanitize } from './utils.js';
 import { DB } from './database.js';
-import { Auth } from './auth.js'; // <-- Impor Modul Autentikasi ditambahkan
+import { Auth } from './auth.js';
 
 // Mendaftarkan fungsi ke window agar bisa dipanggil dari HTML (onclick)
 window.tampilkanToast = tampilkanToast;
@@ -16,14 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Logika Form Login
     const formLogin = document.getElementById('form-login');
     if (formLogin) {
-        formLogin.addEventListener('submit', async (e) => { // <-- Perhatikan tambahan kata 'async'
+        formLogin.addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const pass = document.getElementById('login-pass').value;
 
             const btnSubmit = formLogin.querySelector('button');
             btnSubmit.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Memverifikasi Server...';
-            btnSubmit.disabled = true; // Kunci tombol agar tidak diklik dua kali
+            btnSubmit.disabled = true;
 
             try {
                 // Menunggu respons dari server Firebase
