@@ -1,11 +1,11 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+// js/firebase.js
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 1. Impor dari URL CDN Google (Karena kita tidak menggunakan Node.js/Bundler)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+// 2. Kunci Konfigurasi Rahasia Anda
 const firebaseConfig = {
     apiKey: "AIzaSyAoZBjalA_pl8xYLCkZO31NgLyv2fOreKk",
     authDomain: "sd-jatiwaringin-1.firebaseapp.com",
@@ -16,6 +16,12 @@ const firebaseConfig = {
     measurementId: "G-XY2ES8SD33"
 };
 
-// Initialize Firebase
+// 3. Inisialisasi Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+
+// 4. Aktifkan Layanan Auth & Database
+export const auth = getAuth(app);
+export const dbCloud = getFirestore(app);
+
+// 5. Ekspor fungsi-fungsi agar bisa dipakai oleh auth.js dan database.js
+export { signInWithEmailAndPassword, signOut, doc, setDoc, getDoc };
