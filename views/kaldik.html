@@ -8,26 +8,50 @@
 
     <div class="dashboard-grid" style="grid-template-columns: 1fr 380px; align-items: start;">
 
-        <div class="card">
-            <div style="padding: 24px;">
-                <div class="calendar-header-ui">
-                    <button id="btn-kaldik-prev"><i class="ph ph-caret-left"></i></button>
-                    <h2 id="kaldik-month-year"
-                        style="font-size: 18px; font-weight: 700; color: var(--color-text-main);">Memuat...</h2>
-                    <button id="btn-kaldik-next"><i class="ph ph-caret-right"></i></button>
-                </div>
+        <div style="display: flex; flex-direction: column; gap: 24px;">
+            <div class="card">
+                <div style="padding: 24px;">
+                    <div class="calendar-header-ui">
+                        <button id="btn-kaldik-prev"><i class="ph ph-caret-left"></i></button>
+                        <h2 id="kaldik-month-year"
+                            style="font-size: 18px; font-weight: 700; color: var(--color-text-main);">Memuat...</h2>
+                        <button id="btn-kaldik-next"><i class="ph ph-caret-right"></i></button>
+                    </div>
 
-                <div class="calendar-grid" style="margin-bottom: 8px;">
-                    <div class="calendar-day-name">Min</div>
-                    <div class="calendar-day-name">Sen</div>
-                    <div class="calendar-day-name">Sel</div>
-                    <div class="calendar-day-name">Rab</div>
-                    <div class="calendar-day-name">Kam</div>
-                    <div class="calendar-day-name">Jum</div>
-                    <div class="calendar-day-name">Sab</div>
-                </div>
+                    <div class="calendar-grid" style="margin-bottom: 8px;">
+                        <div class="calendar-day-name">Min</div>
+                        <div class="calendar-day-name">Sen</div>
+                        <div class="calendar-day-name">Sel</div>
+                        <div class="calendar-day-name">Rab</div>
+                        <div class="calendar-day-name">Kam</div>
+                        <div class="calendar-day-name">Jum</div>
+                        <div class="calendar-day-name">Sab</div>
+                    </div>
 
-                <div class="calendar-grid" id="kaldik-days-container"></div>
+                    <div class="calendar-grid" id="kaldik-days-container"></div>
+                </div>
+            </div>
+
+            <div class="card data-table-card">
+                <div class="card-header">
+                    <h2 style="display: flex; align-items: center; gap: 8px;">
+                        <i class="ph ph-list-bullets" style="color: var(--color-primary); font-size: 20px;"></i>
+                        Daftar Keseluruhan Agenda
+                    </h2>
+                </div>
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table id="tabel-semua-agenda">
+                        <thead style="position: sticky; top: 0; z-index: 1;">
+                            <tr>
+                                <th>Tanggal Pelaksanaan</th>
+                                <th>Detail Kegiatan</th>
+                                <th style="text-align: right;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="body-semua-agenda">
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
