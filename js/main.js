@@ -26,12 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
             btnSubmit.disabled = true;
 
             try {
-                // Menunggu respons dari server Firebase
                 await Auth.login(email, pass);
                 tampilkanToast('Otorisasi Firebase Berhasil! Mengalihkan...', 'success');
                 setTimeout(() => window.location.reload(), 1200);
             } catch (error) {
-                // Jika password salah atau email tidak ada di Firebase
                 tampilkanToast('Akses Ditolak! Kredensial tidak valid.', 'danger');
                 btnSubmit.innerHTML = '<i class="ph ph-sign-in"></i> Masuk Sistem';
                 btnSubmit.disabled = false;
@@ -39,14 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Jika belum login, hentikan eksekusi aplikasi dan paksa di layar login
     if (!Auth.isLoggedIn()) {
         if (loginScreen) loginScreen.style.display = 'flex';
         if (mainApp) mainApp.style.display = 'none';
         return;
     }
 
-    // Jika sudah login, sembunyikan layar login dan tampilkan aplikasi utama
     if (loginScreen) loginScreen.style.display = 'none';
     if (mainApp) mainApp.style.display = 'flex';
 
@@ -125,8 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (containerKaldik) {
                 containerKaldik.innerHTML = '';
                 const hariIni = formatTglBaku(new Date());
-
-                // Cek dari tanggal akhir (agar acara berhari-hari tidak hilang sebelum waktunya)
                 const agendaMendatang = DB.getKaldik()
                     .filter(k => (k.tanggal_akhir || k.tanggal) >= hariIni)
                     .sort((a, b) => a.tanggal.localeCompare(b.tanggal))
@@ -139,12 +133,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         const tglObj = new Date(item.tanggal);
                         const tglAkhirObj = new Date(item.tanggal_akhir || item.tanggal);
                         const bulanSingkat = tglObj.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase();
-
                         let bgWarna = 'var(--color-primary-light)'; let txtWarna = 'var(--color-primary)';
                         const isLibur = item.kegiatan.toLowerCase().includes('libur') || tglObj.getDay() === 0;
                         if (item.tanggal === hariIni || isLibur) { bgWarna = 'var(--color-danger-bg)'; txtWarna = 'var(--color-danger)'; }
 
-                        // Jika tanggal lebih dari 1 hari, tambahkan lencana kecil "s.d. tanggal"
                         const teksRentang = (item.tanggal !== (item.tanggal_akhir || item.tanggal)) ? `<span style="font-size:11px; background:var(--color-primary-light); color:var(--color-primary); padding:2px 6px; border-radius:4px; margin-left:8px; display:inline-block; vertical-align:middle;">s.d. ${tglAkhirObj.getDate()} ${tglAkhirObj.toLocaleDateString('id-ID', { month: 'short' })}</span>` : '';
 
                         containerKaldik.insertAdjacentHTML('beforeend', `
@@ -169,6 +161,46 @@ document.addEventListener('DOMContentLoaded', () => {
             let bulanAktif = new Date().getMonth(); let tahunAktif = new Date().getFullYear();
             let tanggalTerpilih = formatTglBaku(new Date());
 
+            // FUNGSI BARU: Render Semua Agenda ke Tabel
+            const renderSemuaAgenda = () => {
+                const tbody = document.getElementById('body-semua-agenda');
+                if (!tbody) return;
+                tbody.innerHTML = '';
+
+                // Urutkan agenda berdasarkan tanggal paling awal
+                const semuaData = [...dbKaldik].sort((a, b) => a.tanggal.localeCompare(b.tanggal));
+
+                if (semuaData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 32px;">Belum ada agenda di kalender.</td></tr>`;
+                    return;
+                }
+
+                semuaData.forEach(ag => {
+                    const formatTgl = (t) => new Date(t).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+                    const tglAkhir = ag.tanggal_akhir || ag.tanggal;
+
+                    let teksTanggal = `<span class="font-medium">${formatTgl(ag.tanggal)}</span>`;
+                    if (ag.tanggal !== tglAkhir) {
+                        teksTanggal += `<br><span style="font-size:11px; color:var(--color-text-muted);">s.d. ${formatTgl(tglAkhir)}</span>`;
+                    }
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="white-space: nowrap;">${teksTanggal}</td>
+                            <td>
+                                <strong style="display:block; margin-bottom:4px;">${sanitize(ag.kegiatan)}</strong>
+                                <span style="font-size:12px; color:var(--color-text-muted);">${sanitize(ag.ket) || '-'}</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <button class="btn-icon-only text-danger" onclick="hapusKaldik(${ag.id})" title="Hapus Agenda">
+                                    <i class="ph ph-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
+            };
+
             const renderKalender = () => {
                 const containerDays = document.getElementById('kaldik-days-container');
                 if (document.getElementById('kaldik-month-year')) document.getElementById('kaldik-month-year').textContent = new Date(tahunAktif, bulanAktif, 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
@@ -184,7 +216,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const dateObj = new Date(tahunAktif, bulanAktif, i);
                     const tglLooping = formatTglBaku(dateObj);
 
-                    // Filter: Memeriksa apakah tanggal looping berada di dalam rentang agenda
                     const agendaAda = dbKaldik.filter(k => {
                         const tglAkhir = k.tanggal_akhir || k.tanggal;
                         return tglLooping >= k.tanggal && tglLooping <= tglAkhir;
@@ -210,7 +241,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (document.getElementById('kaldik-selected-date-text')) document.getElementById('kaldik-selected-date-text').textContent = `Agenda: ${new Date(tanggalTerpilih).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                 if (document.getElementById('kaldik-input-tgl')) document.getElementById('kaldik-input-tgl').value = tanggalTerpilih;
 
-                // Filter rentang untuk memunculkan acara di panel kanan
                 const agendaDitemukan = dbKaldik.filter(k => {
                     const tglAkhir = k.tanggal_akhir || k.tanggal;
                     return tanggalTerpilih >= k.tanggal && tanggalTerpilih <= tglAkhir;
@@ -240,10 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 const tglMulai = document.getElementById('kaldik-input-tgl').value;
                 const elTglAkhir = document.getElementById('kaldik-input-tgl-akhir');
 
-                // Jika input akhir kosong, anggap saja acara cuma 1 hari (samakan dengan tglMulai)
                 let tglAkhir = (elTglAkhir && elTglAkhir.value) ? elTglAkhir.value : tglMulai;
 
-                if (tglAkhir < tglMulai) return tampilkanToast('Peringatan: Tanggal Selesai harus sesudah Tanggal Mulai!', 'danger');
+                if (tglAkhir < tglMulai) return tampilkanToast('Peringatan: Tanggal Selesai harus setelah Tanggal Mulai!', 'danger');
 
                 dbKaldik.push({
                     id: Date.now(),
@@ -258,14 +287,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.getElementById('kaldik-input-tgl').value = tanggalTerpilih;
                 renderKalender();
                 renderPanelKanan();
+                renderSemuaAgenda(); // Perbarui tabel list semua agenda
                 tampilkanToast(`Agenda disimpan.`, 'success');
             });
 
             window.hapusKaldik = (idKaldik) => {
-                if (confirm('Hapus agenda ini?')) { dbKaldik = dbKaldik.filter(k => k.id !== idKaldik); DB.setKaldik(dbKaldik); renderKalender(); renderPanelKanan(); tampilkanToast(`Agenda dihapus.`, 'warning'); }
+                if (confirm('Hapus agenda ini?')) {
+                    dbKaldik = dbKaldik.filter(k => k.id !== idKaldik);
+                    DB.setKaldik(dbKaldik);
+                    renderKalender();
+                    renderPanelKanan();
+                    renderSemuaAgenda(); // Perbarui tabel list semua agenda
+                    tampilkanToast(`Agenda dihapus.`, 'warning');
+                }
             };
 
-            renderKalender(); renderPanelKanan();
+            renderKalender();
+            renderPanelKanan();
+            renderSemuaAgenda(); // Panggil fungsi saat halaman pertama dimuat
         }
 
         // --- C. PRESENSI ---
