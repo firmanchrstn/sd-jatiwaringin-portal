@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.innerHTML = `
             <div class="card" style="width: 90%; max-width: 450px; padding: 24px; position: relative; transform: translateY(20px); transition: transform 0.2s;">
-                <button id="modal-close-btn" class="btn-icon-only text-danger" style="position: absolute; top: 16px; right: 16px;"><i class="ph ph-x"></i></button>
+                <button id="modal-close-btn" class="btn-icon-only text-danger" style="position: absolute; top: 16px; right: 16px;" title="Tutup Pop-up"><i class="ph ph-x"></i></button>
                 <h2 style="font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 8px;"><i class="ph ph-calendar-check" style="color: var(--color-primary); font-size: 24px;"></i> Detail Agenda</h2>
                 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -135,7 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 <div style="display: flex; gap: 12px; margin-top: 24px;">
                     <button id="modal-btn-edit" class="btn btn-outline" style="flex: 1; justify-content: center;"><i class="ph ph-pencil-simple"></i> Edit Data</button>
-                    <button id="modal-btn-save" class="btn btn-primary" style="flex: 1; justify-content: center; display: none;" disabled><i class="ph ph-floppy-disk"></i> Simpan Perubahan</button>
+                    <button id="modal-btn-cancel" class="btn btn-outline" style="flex: 1; justify-content: center; display: none; color: var(--color-text-muted);"><i class="ph ph-x-circle"></i> Batal</button>
+                    <button id="modal-btn-save" class="btn btn-primary" style="flex: 1; justify-content: center; display: none;" disabled><i class="ph ph-floppy-disk"></i> Simpan</button>
                 </div>
             </div>
         `;
@@ -158,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Logika Mode Edit & Simpan
         const btnEdit = document.getElementById('modal-btn-edit');
+        const btnCancel = document.getElementById('modal-btn-cancel');
         const btnSave = document.getElementById('modal-btn-save');
         const inputs = [
             document.getElementById('modal-inp-tgl'),
@@ -166,15 +168,36 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modal-inp-ket')
         ];
 
+        // Menyimpan nilai original sebelum diedit
         const valAsli = [agenda.tanggal, agenda.tanggal_akhir || agenda.tanggal, agenda.kegiatan, agenda.ket || ''];
 
+        // Saat Tombol Edit Ditekan
         btnEdit.onclick = () => {
             inputs.forEach(i => i.disabled = false);
-            inputs[2].focus(); // Fokus ke nama kegiatan
+            inputs[2].focus();
             btnEdit.style.display = 'none';
-            btnSave.style.display = 'flex';
+            btnCancel.style.display = 'flex'; // Munculkan Batal
+            btnSave.style.display = 'flex';   // Munculkan Simpan
         };
 
+        // Saat Tombol Batal Ditekan
+        btnCancel.onclick = () => {
+            // 1. Kembalikan ketikan ke nilai asli
+            inputs[0].value = valAsli[0];
+            inputs[1].value = valAsli[1];
+            inputs[2].value = valAsli[2];
+            inputs[3].value = valAsli[3];
+
+            // 2. Kunci kembali inputnya
+            inputs.forEach(i => i.disabled = true);
+
+            // 3. Kembalikan susunan tombol
+            btnCancel.style.display = 'none';
+            btnSave.style.display = 'none';
+            btnEdit.style.display = 'flex';
+        };
+
+        // Deteksi jika pengguna sedang mengetik
         const cekPerubahan = () => {
             const adaBerubah = inputs[0].value !== valAsli[0] || inputs[1].value !== valAsli[1] || inputs[2].value !== valAsli[2] || inputs[3].value !== valAsli[3];
             btnSave.disabled = !adaBerubah;
@@ -182,6 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         inputs.forEach(i => i.addEventListener('input', cekPerubahan));
 
+        // Saat Tombol Simpan Ditekan
         btnSave.onclick = () => {
             if (inputs[1].value < inputs[0].value) return tampilkanToast('Peringatan: Tanggal Selesai harus sesudah Tanggal Mulai!', 'danger');
 
@@ -196,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 DB.setKaldik(dbKaldik);
                 tutupModal();
                 tampilkanToast('Perubahan agenda berhasil disimpan.', 'success');
-                inisialisasiHalaman('dashboard'); // Segarkan daftar agenda di dasbor
+                inisialisasiHalaman('dashboard');
             }
         };
     };
