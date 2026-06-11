@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //  KONFIGURASI GLOBAL ASISTEN AI GEMINI
     // ==========================================
     // Silakan masukkan API Key Gemini Anda di antara tanda kutip di bawah ini:
-    const GEMINI_API_KEY = "AQ.Ab8RN6KOtSa4Lah7zu72sZOUJn2YMu1_exuFfZbDAZRIUXFAaw";
+    const GEMINI_API_KEY = "AQ.Ab8RN6IWF9nu3NObMfv89OSJUfo1oBpV380NdBeYr94GGZEEow";
 
 
     // ==========================================
