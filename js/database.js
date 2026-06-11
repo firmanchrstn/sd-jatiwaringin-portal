@@ -1,7 +1,7 @@
 // ==========================================
 // DATA LAYER (HYBRID CLOUD-LOCAL MODEL)
 // ==========================================
-import { dbCloud, doc, setDoc } from './firebase.js';
+import { dbCloud, doc, setDoc, getDoc } from './firebase.js'; // Tambahkan getDoc disini
 
 const getUserEmail = () => localStorage.getItem('user_email') || 'default_user';
 
@@ -15,7 +15,7 @@ const setSyncStatus = (status) => {
         icon.className = 'ph ph-cloud-arrow-up';
         container.style.color = 'var(--color-warning)';
         icon.style.animation = 'pulse-sync 1s infinite';
-        container.title = 'Sedang menyinkronkan ke Cloud...';
+        container.title = 'Sedang memproses Cloud...';
     } else if (status === 'success') {
         icon.className = 'ph ph-cloud-check';
         container.style.color = 'var(--color-success)';
@@ -25,7 +25,7 @@ const setSyncStatus = (status) => {
         icon.className = 'ph ph-cloud-warning';
         container.style.color = 'var(--color-danger)';
         icon.style.animation = 'none';
-        container.title = 'Offline: Gagal sinkronisasi ke Cloud. Data tersimpan lokal.';
+        container.title = 'Offline: Gagal sinkronisasi. Data aman di lokal.';
     }
 };
 
@@ -53,6 +53,36 @@ const injeksiID = (arrayData) => {
 };
 
 export const DB = {
+    // FUNGSI BARU: Menarik Data dari Firebase (Penyelamat Data)
+    pullFromCloud: async () => {
+        const email = getUserEmail();
+        if (email !== 'default_user') {
+            setSyncStatus('syncing');
+            try {
+                const docRef = doc(dbCloud, "guru_data", email);
+                const docSnap = await getDoc(docRef);
+
+                if (docSnap.exists()) {
+                    const dataServer = docSnap.data();
+                    // Jika ada data di server, timpa data lokal yang kosong
+                    if (dataServer.profil) localStorage.setItem('db_profil', JSON.stringify(dataServer.profil));
+                    if (dataServer.kaldik) localStorage.setItem('db_kaldik', JSON.stringify(dataServer.kaldik));
+                    if (dataServer.siswa) localStorage.setItem('db_siswa', JSON.stringify(dataServer.siswa));
+                    if (dataServer.kelas) localStorage.setItem('db_kelas', JSON.stringify(dataServer.kelas));
+                    if (dataServer.presensi) localStorage.setItem('db_presensi', JSON.stringify(dataServer.presensi));
+                    if (dataServer.nilai) localStorage.setItem('db_nilai', JSON.stringify(dataServer.nilai));
+
+                    setSyncStatus('success');
+                    return true;
+                }
+            } catch (err) {
+                console.error("Cloud Pull Error:", err);
+                setSyncStatus('error');
+            }
+        }
+        return false;
+    },
+
     getProfil: () => JSON.parse(localStorage.getItem('db_profil')) || { nama: '', peran: '', wa: '', jk: '', tema_gelap: false, notif_wa: true, notif_browser: true, notif_email: true },
     setProfil: (data) => { localStorage.setItem('db_profil', JSON.stringify(data)); syncToCloud('profil', data); },
 
