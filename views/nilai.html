@@ -2,98 +2,101 @@
     <div class="page-header">
         <div class="header-text">
             <h1>Nilai Akademik</h1>
-            <p>Sistem penginputan 4 jenis evaluasi belajar.</p>
+            <p>Pencatatan rekapitulasi evaluasi siswa dengan dukungan Asisten AI.</p>
         </div>
     </div>
+    <div class="dashboard-grid" style="grid-template-columns: 1fr 380px; align-items: start;">
 
-    <div class="card mb-4">
-        <div class="card-header">
-            <h2>Input Nilai Evaluasi</h2>
-        </div>
-        <div style="padding: 24px;">
-            <form id="form-tambah-nilai" class="form-row">
-                <div class="form-group" style="flex: 1.5;"><label class="form-label">NAMA SISWA</label><input
-                        type="text" id="input-nilai-nama" class="form-control" placeholder="Ketik nama siswa..."
-                        required></div>
-                <div class="form-group"><label class="form-label">MATA PELAJARAN</label><input type="text"
-                        id="input-nilai-mapel" class="form-control" required></div>
-                <div class="form-group" style="flex: 1.5;">
-                    <label class="form-label">JENIS PENILAIAN</label>
-                    <select id="input-nilai-jenis" class="form-control" required>
-                        <option value="" disabled selected>Pilih Evaluasi...</option>
-                        <option value="Tugas Harian 1">Tugas Harian 1</option>
-                        <option value="Tugas Harian 2">Tugas Harian 2</option>
-                        <option value="Tugas Harian 3">Tugas Harian 3</option>
-                        <option value="UTS">UTS (Ujian Tengah Semester)</option>
-                        <option value="UAS">UAS (Ujian Akhir Semester)</option>
-                        <option value="PSAT">PSAT (Penilaian Sumatif Akhir Tahun)</option>
-                    </select>
-                </div>
-                <div class="form-group" style="flex: 0.6;"><label class="form-label">SKOR</label><input type="number"
-                        id="input-nilai-skor" class="form-control" placeholder="0-100" min="0" max="100" required></div>
-                <button type="submit" class="btn btn-primary"><i class="ph ph-floppy-disk"></i> Simpan</button>
-            </form>
-        </div>
-    </div>
-
-    <div class="card mb-4" style="background: var(--color-primary-light); border: 1px solid var(--color-primary);">
-        <div style="padding: 24px; display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <h2 style="color: var(--color-primary); margin-bottom: 4px;">Pusat Unduh Laporan</h2>
-                <p style="color: var(--color-text-main); font-size: 13px;">Ekspor seluruh rekapitulasi nilai menjadi
-                    file Spreadsheet (CSV) berdasarkan filter yang aktif.</p>
-            </div>
-            <button class="btn btn-primary" id="btn-ekspor-nilai">
-                <i class="ph ph-download-simple"></i> Ekspor Rapor Kelas
-            </button>
-        </div>
-    </div>
-
-    <div class="card data-table-card">
-        <div class="card-header"
-            style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-            <div>
-                <h2>Tabel Nilai Siswa</h2>
-            </div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-                <select id="filter-kelas-nilai" class="form-control"
-                    style="width: auto; height: 38px; border-color: var(--color-primary); background: var(--color-primary-light); color: var(--color-primary); font-weight: 600; cursor: pointer;">
+        <div class="card data-table-card">
+            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h2><i class="ph ph-exam"></i> Rekapitulasi Nilai</h2>
+                <select id="filter-kelas-nilai" class="form-control" style="width: auto; padding: 4px 12px;">
                     <option value="Semua">Semua Kelas</option>
                     <option value="1A">Kelas 1A</option>
-                    <option value="1B">Kelas 1B</option>
-                    <option value="1C">Kelas 1C</option>
                     <option value="2A">Kelas 2A</option>
-                    <option value="2B">Kelas 2B</option>
-                    <option value="2C">Kelas 2C</option>
                     <option value="3A">Kelas 3A</option>
-                    <option value="3B">Kelas 3B</option>
-                    <option value="3C">Kelas 3C</option>
                     <option value="4A">Kelas 4A</option>
-                    <option value="4B">Kelas 4B</option>
-                    <option value="4C">Kelas 4C</option>
                     <option value="5A">Kelas 5A</option>
-                    <option value="5B">Kelas 5B</option>
-                    <option value="5C">Kelas 5C</option>
                     <option value="6A">Kelas 6A</option>
-                    <option value="6B">Kelas 6B</option>
-                    <option value="6C">Kelas 6C</option>
                 </select>
             </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Nama Siswa</th>
+                            <th>Mata Pelajaran</th>
+                            <th>Jenis Evaluasi</th>
+                            <th style="text-align: center;">Skor</th>
+                            <th>Keterangan</th>
+                            <th style="text-align: right;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body-tabel-nilai"></tbody>
+                </table>
+            </div>
+            <div style="padding: 16px; border-top: 1px solid var(--color-border); text-align: right;">
+                <button id="btn-ekspor-nilai" class="btn btn-outline"><i class="ph ph-download-simple"></i> Ekspor
+                    Rapor</button>
+            </div>
         </div>
-        <div class="table-responsive">
-            <table id="tabel-nilai">
-                <thead>
-                    <tr>
-                        <th>Nama Siswa</th>
-                        <th>Mapel</th>
-                        <th>Jenis Evaluasi</th>
-                        <th style="text-align: center;">Skor</th>
-                        <th>Status</th>
-                        <th style="text-align: right;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody id="body-tabel-nilai"></tbody>
-            </table>
+
+        <div class="sticky-panel" style="display: flex; flex-direction: column; gap: 24px;">
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="ph ph-plus-circle"></i> Input Nilai</h2>
+                </div>
+                <div style="padding: 24px;">
+
+                    <div
+                        style="background: linear-gradient(135deg, #e0e7ff 0%, #ede9fe 100%); padding: 16px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #c7d2fe; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);">
+                        <h3
+                            style="color: #4f46e5; font-size: 14px; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                            <i class="ph-fill ph-magic-wand"></i> Asisten AI (Nilai Masal)</h3>
+                        <textarea id="ai-nilai-input" class="form-control"
+                            placeholder="Cth: Budi dapat 85, Siti dapat 90, Joko dapat 60."
+                            style="resize: none; height: 70px; margin-bottom: 12px; border-color: #a5b4fc; background: white;"></textarea>
+                        <button type="button" id="btn-proses-ai-nilai" class="btn"
+                            style="width: 100%; justify-content: center; background: #4f46e5; color: white; border: none; font-weight: bold;"><i
+                                class="ph ph-sparkle"></i> Proses dengan AI</button>
+                    </div>
+
+                    <div style="text-align: center; margin-bottom: 20px;">
+                        <span
+                            style="background: white; padding: 0 10px; color: var(--color-text-muted); font-size: 12px; position: relative; z-index: 1;">Atau
+                            secara manual</span>
+                        <hr style="margin-top: -8px; border: none; border-top: 1px dashed var(--color-border);">
+                    </div>
+
+                    <form id="form-tambah-nilai" style="display: flex; flex-direction: column; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label">MATA PELAJARAN</label>
+                            <input type="text" id="input-nilai-mapel" class="form-control"
+                                placeholder="Misal: Matematika" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">JENIS EVALUASI</label>
+                            <select id="input-nilai-jenis" class="form-control" required>
+                                <option value="Ulangan Harian">Ulangan Harian</option>
+                                <option value="Tugas / PR">Tugas / PR</option>
+                                <option value="Ujian Tengah Semester">Ujian Tengah Semester</option>
+                                <option value="Ujian Akhir Semester">Ujian Akhir Semester</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">NAMA SISWA (MANUAL)</label>
+                            <input type="text" id="input-nilai-nama" class="form-control"
+                                placeholder="Ketik nama siswa..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">SKOR NILAI (0-100)</label>
+                            <input type="number" id="input-nilai-skor" class="form-control" min="0" max="100" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"
+                            style="margin-top: 8px; justify-content: center;">Simpan Manual</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
