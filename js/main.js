@@ -7,7 +7,7 @@ window.tampilkanToast = tampilkanToast;
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 🤖 KONFIGURASI GLOBAL ASISTEN AI GEMINI
+    //  KONFIGURASI GLOBAL ASISTEN AI GEMINI
     // ==========================================
     // Silakan masukkan API Key Gemini Anda di antara tanda kutip di bawah ini:
     const GEMINI_API_KEY = "AQ.Ab8RN6KOtSa4Lah7zu72sZOUJn2YMu1_exuFfZbDAZRIUXFAaw";
@@ -317,14 +317,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             };
 
-            // 🤖 FUNGSI AI PRESENSI
+            //  FUNGSI AI PRESENSI 
             const btnProsesAI = document.getElementById('btn-proses-ai');
             if (btnProsesAI) {
                 btnProsesAI.addEventListener('click', async () => {
                     const teks = document.getElementById('ai-absen-input').value; const tgl = document.getElementById('input-tanggal').value; const mapelKelas = selectMapel.value;
                     if (!mapelKelas) return tampilkanToast('Pilih Jadwal / Kelas di form bawah terlebih dahulu!', 'danger');
                     if (!teks.trim()) return tampilkanToast('Ketik pesan absen untuk AI!', 'danger');
-                    if (GEMINI_API_KEY === "AQ.Ab8RN6KOtSa4Lah7zu72sZOUJn2YMu1_exuFfZbDAZRIUXFAaw") return tampilkanToast('API Key Gemini belum disetel.', 'warning');
+                     if (!GEMINI_API_KEY) return tampilkanToast('API Key Gemini belum disetel.', 'warning');
 
                     const targetKelas = selectMapel.options[selectMapel.selectedIndex].dataset.kelasTarget;
                     const siswaKelas = dbSiswa.filter(s => s.kelas === targetKelas).map(s => s.nama);
@@ -379,13 +379,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 [...dataTampil].reverse().forEach((d) => { tbodySiswa.innerHTML += `<tr><td><span class="font-medium">${sanitize(d.nama)}</span><br><span style="font-size:11px; color:var(--color-text-muted);">NIK: ${sanitize(d.nik)}</span></td><td><span class="badge" style="background:var(--color-primary-light); color:var(--color-primary);">${d.kelas}</span></td><td>${d.jk === 'Laki-laki' ? 'L' : 'P'}</td><td>${sanitize(d.ayah)}</td><td style="text-align: right;"><button class="btn-icon-only text-danger" onclick="hapusDataSiswa('${d.id}')"><i class="ph ph-trash"></i></button></td></tr>`; });
             };
 
-            // 🤖 FUNGSI AI SISWA
+            // FUNGSI AI SISWA
             const btnProsesAISiswa = document.getElementById('btn-proses-ai-siswa');
             if (btnProsesAISiswa) {
                 btnProsesAISiswa.addEventListener('click', async () => {
                     const teks = document.getElementById('ai-siswa-input').value; const kelasTujuan = document.getElementById('s-kelas').value;
                     if (!teks.trim()) return tampilkanToast('Ketik pesan untuk AI!', 'danger');
-                    if (GEMINI_API_KEY === "AQ.Ab8RN6KOtSa4Lah7zu72sZOUJn2YMu1_exuFfZbDAZRIUXFAaw") return tampilkanToast('API Key Gemini belum disetel.', 'warning');
+                     if (!GEMINI_API_KEY) return tampilkanToast('API Key Gemini belum disetel.', 'warning');
 
                     btnProsesAISiswa.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Memproses...'; btnProsesAISiswa.disabled = true;
                     try {
@@ -430,14 +430,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             };
 
-            // 🤖 FUNGSI AI NILAI
+            //  FUNGSI AI NILAI
             const btnProsesAINilai = document.getElementById('btn-proses-ai-nilai');
             if (btnProsesAINilai) {
                 btnProsesAINilai.addEventListener('click', async () => {
                     const teks = document.getElementById('ai-nilai-input').value; const mapelTarget = document.getElementById('input-nilai-mapel').value; const jenisTarget = document.getElementById('input-nilai-jenis').value;
                     if (!teks.trim()) return tampilkanToast('Ketik data nilai untuk AI!', 'danger');
                     if (!mapelTarget) return tampilkanToast('Pilih/Ketik Mata Pelajaran di form bawah dulu!', 'danger');
-                    if (GEMINI_API_KEY === "AQ.Ab8RN6KOtSa4Lah7zu72sZOUJn2YMu1_exuFfZbDAZRIUXFAaw") return tampilkanToast('API Key Gemini belum disetel.', 'warning');
+                     if (!GEMINI_API_KEY) return tampilkanToast('API Key Gemini belum disetel.', 'warning');
 
                     btnProsesAINilai.innerHTML = '<i class="ph ph-spinner ph-spin"></i> Memproses...'; btnProsesAINilai.disabled = true;
                     try {
