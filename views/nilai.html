@@ -1,18 +1,20 @@
-<div class="view-section">
-    <div class="page-header">
-        <div class="header-text">
-            <h1>Nilai Akademik</h1>
-            <p>Pencatatan rekapitulasi evaluasi siswa dengan dukungan Asisten AI.</p>
+<div class="view-section active">
+    <div
+        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+            <h1 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">Penilaian Akademik</h1>
+            <p style="color: var(--color-text-muted); font-size: 14px;">Kelola nilai Tugas, Ulangan, UTS, UAS dan Cetak
+                Rapor.</p>
         </div>
-    </div>
-    <div class="dashboard-grid" style="grid-template-columns: 1fr 380px; align-items: start;">
-
-        <div class="card data-table-card">
-            <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
-                <h2><i class="ph ph-exam"></i> Rekapitulasi Nilai</h2>
-                <select id="filter-kelas-nilai" class="form-control" style="width: auto; padding: 4px 12px;">
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+            <div style="position: relative;">
+                <i class="ph ph-funnel"
+                    style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);"></i>
+                <select id="filter-kelas-nilai" class="form-control"
+                    style="padding-left: 36px; min-width: 150px; cursor: pointer;">
                     <option value="Semua">Semua Kelas</option>
                     <option value="1A">Kelas 1A</option>
+                    <option value="1B">Kelas 1B</option>
                     <option value="2A">Kelas 2A</option>
                     <option value="3A">Kelas 3A</option>
                     <option value="4A">Kelas 4A</option>
@@ -20,103 +22,100 @@
                     <option value="6A">Kelas 6A</option>
                 </select>
             </div>
-            <div class="table-responsive">
-                <table class="data-table">
-                    <thead>
-                        <tr>
-                            <th>Nama Siswa</th>
-                            <th>Mata Pelajaran</th>
-                            <th>Jenis Evaluasi</th>
-                            <th style="text-align: center;">Skor</th>
-                            <th>Keterangan</th>
-                            <th style="text-align: right;">Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="body-tabel-nilai"></tbody>
-                </table>
-            </div>
-            <div style="padding: 16px; border-top: 1px solid var(--color-border); text-align: right;">
-                <button id="btn-ekspor-nilai" class="btn btn-outline"><i class="ph ph-download-simple"></i> Ekspor
-                    Rapor</button>
-            </div>
+            <button class="btn btn-outline"
+                style="background: var(--color-surface-solid); color: var(--color-warning); border-color: var(--color-warning-bg);"
+                onclick="tampilkanToast('Fitur Rapor PDF sedang dikembangkan!', 'info')">
+                <i class="ph ph-file-pdf"></i> Generate Rapor
+            </button>
+            <button class="btn btn-outline"
+                onclick="const form = document.getElementById('panel-tambah-nilai'); form.style.display = form.style.display === 'none' ? 'block' : 'none';"
+                style="background: var(--color-surface-solid);">
+                <i class="ph ph-plus-circle"></i> Input Manual
+            </button>
         </div>
+    </div>
 
-        <div class="sticky-panel" style="display: flex; flex-direction: column; gap: 24px;">
-            <div class="card">
-                <div class="card-header">
-                    <h2><i class="ph ph-plus-circle"></i> Input Nilai</h2>
-                </div>
-                <div style="padding: 24px;">
+    <div class="glass-panel"
+        style="padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--color-primary); background: linear-gradient(to right, var(--color-surface), transparent);">
+        <h3 style="font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+            <i class="ph-fill ph-magic-wand" style="color: var(--color-primary); font-size: 20px;"></i>
+            <span style="font-weight: 800;">Asisten AI (Input Nilai Cepat)</span>
+        </h3>
+        <p style="font-size: 13px; color: var(--color-text-muted); margin-bottom: 16px;">Ketik perolehan nilai siswa.
+            Cth: <i>"Budi dapat 85, Siti 90, Joko dapat 60"</i></p>
 
-                    <!-- KOTAK ASISTEN AI (PREMIUM DESIGN) -->
-                    <div
-                        style="position: relative; background: #0f172a; padding: 20px; border-radius: 12px; margin-bottom: 24px; border: 1px solid #334155; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); overflow: hidden;">
-                        <!-- Efek Cahaya AI (Glow) -->
-                        <div
-                            style="position: absolute; top: -30px; right: -30px; width: 100px; height: 100px; background: #6366f1; filter: blur(40px); opacity: 0.5; pointer-events: none;">
-                        </div>
-                        <div
-                            style="position: absolute; bottom: -30px; left: -30px; width: 100px; height: 100px; background: #a855f7; filter: blur(40px); opacity: 0.4; pointer-events: none;">
-                        </div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <textarea id="ai-nilai-input" class="form-control" placeholder="Tulis instruksi nilai..."
+                style="resize: none; height: 46px; flex: 1; transition: height 0.2s;" onfocus="this.style.height='80px'"
+                onblur="if(this.value==='') this.style.height='46px'"></textarea>
+            <input type="text" id="ai-mapel-target" class="form-control" placeholder="Mata Pelajaran"
+                style="width: 150px; height: 46px;">
+            <select id="ai-jenis-target" class="form-control" style="width: 120px; height: 46px;">
+                <option value="Tugas">Tugas</option>
+                <option value="Harian">Harian</option>
+                <option value="UTS">UTS</option>
+                <option value="UAS">UAS</option>
+                <option value="Praktik">Praktik</option>
+            </select>
+            <button type="button" id="btn-proses-ai-nilai" class="btn btn-primary" style="height: 46px;">
+                <i class="ph ph-sparkle"></i> Proses
+            </button>
+        </div>
+    </div>
 
-                        <h3
-                            style="color: #e2e8f0; font-size: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; position: relative; z-index: 1;">
-                            <i class="ph-fill ph-magic-wand" style="color: #a855f7; font-size: 18px;"></i>
-                            <span
-                                style="background: linear-gradient(to right, #818cf8, #c084fc); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;">Asisten
-                                AI (Nilai Cepat)</span>
-                        </h3>
-
-                        <textarea id="ai-nilai-input" class="form-control"
-                            placeholder="Cth: Budi dapat 85, Siti dapat 90, Joko dapat 60."
-                            style="resize: none; height: 80px; margin-bottom: 16px; border: 1px solid #475569; background: rgba(30, 41, 59, 0.7); color: #f8fafc; border-radius: 8px; position: relative; z-index: 1; transition: all 0.3s;"
-                            onfocus="this.style.borderColor='#818cf8'; this.style.boxShadow='0 0 0 3px rgba(99, 102, 241, 0.2)';"
-                            onblur="this.style.borderColor='#475569'; this.style.boxShadow='none';"></textarea>
-
-                        <button type="button" id="btn-proses-ai-nilai" class="btn"
-                            style="width: 100%; justify-content: center; background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%); color: white; border: none; font-weight: bold; border-radius: 8px; padding: 12px; position: relative; z-index: 1; transition: transform 0.2s, box-shadow 0.2s;"
-                            onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(147, 51, 234, 0.4)';"
-                            onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none';">
-                            <i class="ph ph-sparkle"></i> Proses dengan AI
-                        </button>
-                    </div>
-
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <span
-                            style="background: white; padding: 0 10px; color: var(--color-text-muted); font-size: 12px; position: relative; z-index: 1;">Atau
-                            secara manual</span>
-                        <hr style="margin-top: -8px; border: none; border-top: 1px dashed var(--color-border);">
-                    </div>
-
-                    <form id="form-tambah-nilai" style="display: flex; flex-direction: column; gap: 16px;">
-                        <div class="form-group">
-                            <label class="form-label">MATA PELAJARAN</label>
-                            <input type="text" id="input-nilai-mapel" class="form-control"
-                                placeholder="Misal: Matematika" required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">JENIS EVALUASI</label>
-                            <select id="input-nilai-jenis" class="form-control" required>
-                                <option value="Ulangan Harian">Ulangan Harian</option>
-                                <option value="Tugas / PR">Tugas / PR</option>
-                                <option value="Ujian Tengah Semester">Ujian Tengah Semester</option>
-                                <option value="Ujian Akhir Semester">Ujian Akhir Semester</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">NAMA SISWA (MANUAL)</label>
-                            <input type="text" id="input-nilai-nama" class="form-control"
-                                placeholder="Ketik nama siswa..." required>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">SKOR NILAI (0-100)</label>
-                            <input type="number" id="input-nilai-skor" class="form-control" min="0" max="100" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary"
-                            style="margin-top: 8px; justify-content: center;">Simpan Manual</button>
-                    </form>
-                </div>
+    <div id="panel-tambah-nilai" class="glass-panel"
+        style="padding: 24px; margin-bottom: 24px; display: none; border-left: 4px solid var(--color-info);">
+        <h3 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;"><i
+                class="ph-fill ph-keyboard" style="color: var(--color-info); font-size: 20px;"></i> Input Nilai Satuan
+        </h3>
+        <form id="form-tambah-nilai"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px;">
+            <div class="form-group"><label
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">NAMA
+                    SISWA</label><input type="text" id="input-nilai-nama" class="form-control" required
+                    placeholder="Nama Siswa"></div>
+            <div class="form-group"><label
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">MATA
+                    PELAJARAN</label><input type="text" id="input-nilai-mapel" class="form-control" required
+                    placeholder="Cth: Matematika"></div>
+            <div class="form-group"><label
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">JENIS
+                    TES</label>
+                <select id="input-nilai-jenis" class="form-control" required>
+                    <option value="Tugas">Tugas</option>
+                    <option value="Harian">Ulangan Harian</option>
+                    <option value="UTS">UTS</option>
+                    <option value="UAS">UAS</option>
+                    <option value="Praktik">Praktik</option>
+                    <option value="Sikap">Sikap</option>
+                </select>
             </div>
+            <div class="form-group"><label
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">SKOR
+                    (0-100)</label><input type="number" id="input-nilai-skor" class="form-control" required min="0"
+                    max="100" placeholder="0"></div>
+            <div class="form-group" style="display: flex; align-items: flex-end;"><button type="submit"
+                    class="btn btn-outline"
+                    style="width: 100%; justify-content: center; height: 44px; color: var(--color-info); border-color: var(--color-info);"><i
+                        class="ph ph-floppy-disk"></i> Simpan Nilai</button></div>
+        </form>
+    </div>
+
+    <div class="glass-panel" style="overflow: hidden;">
+        <div class="table-responsive">
+            <table id="tabel-nilai">
+                <thead>
+                    <tr>
+                        <th>NAMA SISWA</th>
+                        <th>MATA PELAJARAN</th>
+                        <th>KATEGORI</th>
+                        <th style="text-align: center;">SKOR</th>
+                        <th>PREDIKAT</th>
+                        <th style="text-align: right;">AKSI</th>
+                    </tr>
+                </thead>
+                <tbody id="body-tabel-nilai"></tbody>
+            </table>
         </div>
     </div>
 </div>

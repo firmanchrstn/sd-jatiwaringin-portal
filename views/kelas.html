@@ -1,94 +1,65 @@
-<div class="view-section">
-    <div class="page-header">
-        <div class="header-text">
-            <h1>Jadwal Mengajar</h1>
-            <p>Manajemen jadwal otomatis terintegrasi (Format Hari & Jam).</p>
+<div class="view-section active">
+    <div
+        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
+        <div>
+            <h1 style="font-size: 24px; font-weight: 800; margin-bottom: 4px;">Jadwal & Kelas</h1>
+            <p style="color: var(--color-text-muted); font-size: 14px;">Manajemen rombongan belajar dan jadwal
+                pelajaran.</p>
         </div>
     </div>
 
-    <div class="card mb-4">
-        <div class="card-header">
-            <h2>Tambah Jadwal Kelas Baru</h2>
-        </div>
-        <div style="padding: 24px;">
-            <form id="form-tambah-kelas" style="display: flex; flex-direction: column; gap: 20px;">
-                <div class="form-row">
-                    <div class="form-group" style="flex: 1.5;">
-                        <label class="form-label">HARI</label>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+        <div class="glass-panel" style="padding: 24px; height: fit-content;">
+            <h3
+                style="font-size: 16px; margin-bottom: 16px; border-bottom: 1px solid var(--color-border); padding-bottom: 12px;">
+                <i class="ph ph-plus-circle text-primary"></i> Tambah Jadwal Baru</h3>
+            <form id="form-tambah-kelas" style="display: flex; flex-direction: column; gap: 16px;">
+                <div class="form-group"><label class="form-label"
+                        style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">MATA
+                        PELAJARAN</label><input type="text" id="input-mapel" class="form-control" required
+                        placeholder="Cth: Bahasa Indonesia"></div>
+                <div class="form-group"><label class="form-label"
+                        style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">KELAS
+                        TARGET</label><input type="text" id="input-namakelas" class="form-control" required
+                        placeholder="Cth: 1A"></div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group"><label class="form-label"
+                            style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">HARI</label>
                         <select id="input-hari" class="form-control" required>
-                            <option value="" disabled selected>Pilih Hari...</option>
-                            <option value="Senin">Senin</option>
-                            <option value="Selasa">Selasa</option>
-                            <option value="Rabu">Rabu</option>
-                            <option value="Kamis">Kamis</option>
-                            <option value="Jumat">Jumat</option>
-                            <option value="Sabtu">Sabtu</option>
+                            <option>Senin</option>
+                            <option>Selasa</option>
+                            <option>Rabu</option>
+                            <option>Kamis</option>
+                            <option>Jumat</option>
+                            <option>Sabtu</option>
                         </select>
                     </div>
-                    <div class="form-group" style="flex: 1;">
-                        <label class="form-label">JAM KE</label>
-                        <input type="number" id="input-jamke" class="form-control" placeholder="Mis: 1" min="1" max="10"
-                            required>
-                    </div>
-                    <div class="form-group" style="flex: 2;">
-                        <label class="form-label">WAKTU (Rentang)</label>
-                        <input type="text" id="input-waktu" class="form-control" placeholder="Mis: 07:00 - 08:30"
-                            required autocomplete="off">
-                    </div>
+                    <div class="form-group"><label class="form-label"
+                            style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">JAM
+                            KE</label><input type="text" id="input-jamke" class="form-control" required
+                            placeholder="1-2"></div>
                 </div>
+                <div class="form-group"><label class="form-label"
+                        style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">WAKTU</label><input
+                        type="text" id="input-waktu" class="form-control" required placeholder="07:00 - 08:30"></div>
 
-                <div class="form-row">
-                    <div class="form-group" style="flex: 2;">
-                        <label class="form-label">MATA PELAJARAN</label>
-                        <input type="text" id="input-mapel" class="form-control" placeholder="Mis: Tematik / Matematika"
-                            required autocomplete="off">
-                    </div>
-                    <div class="form-group" style="flex: 1.5;">
-                        <label class="form-label">KELAS</label>
-                        <select id="input-namakelas" class="form-control" required>
-                            <option value="" disabled selected>Pilih Bagian...</option>
-                            <option value="1A">Kelas 1A</option>
-                            <option value="1B">Kelas 1B</option>
-                            <option value="1C">Kelas 1C</option>
-                            <option value="2A">Kelas 2A</option>
-                            <option value="2B">Kelas 2B</option>
-                            <option value="2C">Kelas 2C</option>
-                            <option value="3A">Kelas 3A</option>
-                            <option value="3B">Kelas 3B</option>
-                            <option value="3C">Kelas 3C</option>
-                            <option value="4A">Kelas 4A</option>
-                            <option value="4B">Kelas 4B</option>
-                            <option value="4C">Kelas 4C</option>
-                            <option value="5A">Kelas 5A</option>
-                            <option value="5B">Kelas 5B</option>
-                            <option value="5C">Kelas 5C</option>
-                            <option value="6A">Kelas 6A</option>
-                            <option value="6B">Kelas 6B</option>
-                            <option value="6C">Kelas 6C</option>
-                        </select>
-                    </div>
-                </div>
+                <label
+                    style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 12px; background: var(--color-surface-hover); border-radius: 8px; margin-top: 8px;">
+                    <input type="checkbox" id="input-wa"
+                        style="width: 18px; height: 18px; accent-color: var(--color-success);">
+                    <span style="font-size: 13px; font-weight: 600;">Aktifkan Notifikasi WhatsApp (BETA)</span>
+                </label>
 
-                <div
-                    style="background: #F0FDF4; padding: 16px; border-radius: 8px; border: 1px solid #BBF7D0; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <i class="ph ph-whatsapp-logo" style="font-size: 24px; color: #16A34A;"></i>
-                        <div>
-                            <p style="font-weight: 600; font-size: 14px; color: #166534; margin-bottom: 2px;">Aktifkan
-                                Pengingat WhatsApp</p>
-                            <p style="font-size: 12px; color: #15803D;">Bot akan mengirim pesan ke nomor Anda H-30 Menit
-                                sebelum jam mengajar dimulai.</p>
-                        </div>
-                    </div>
-                    <input type="checkbox" id="input-wa" style="width: 20px; height: 20px; cursor: pointer;">
-                </div>
-
-                <button type="submit" class="btn btn-primary" style="width: fit-content;"><i
-                        class="ph ph-plus-circle"></i> Simpan Jadwal</button>
+                <button type="submit" class="btn btn-primary" style="justify-content: center; margin-top: 8px;"><i
+                        class="ph ph-floppy-disk"></i> Simpan Jadwal</button>
             </form>
         </div>
-    </div>
-    <div id="grid-kelas"
-        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; padding-bottom: 32px;">
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+            <h3 style="font-size: 16px; margin-bottom: 8px;"><i class="ph ph-list-bullets"></i> Daftar Kelas Saya</h3>
+            <div id="grid-kelas"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px;">
+            </div>
+        </div>
     </div>
 </div>

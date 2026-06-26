@@ -4,106 +4,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Portal Guru SD Jatiwaringin 1. Sistem Informasi Akademik.">
-    <meta name="theme-color" content="#4F46E5">
-    <title>Portal Guru - Sistem Informasi SD Jatiwaringin 1</title>
+    <title>Portal Guru - SD Jatiwaringin 1</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
     <link rel="stylesheet" href="css/style.css">
-    <script src="https://unpkg.com/@phosphor-icons/web" defer></script>
 </head>
 
 <body>
 
-    <div id="login-screen" class="login-screen">
-        <div class="login-card">
-            <div class="login-logo">
-                <i class="ph-fill ph-graduation-cap"></i>
+    <div id="login-screen"
+        style="display: flex; height: 100vh; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg-app) 100%); position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;">
+        <div class="glass-panel" style="padding: 40px; width: 90%; max-width: 400px; text-align: center;">
+            <div
+                style="width: 70px; height: 70px; background: var(--color-primary); color: white; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px; box-shadow: var(--shadow-md);">
+                <i class="ph ph-graduation-cap"></i>
             </div>
-            <h2>Portal Guru Terpadu</h2>
-            <p>Silakan masuk menggunakan akun SD Jatiwaringin 1 Anda.</p>
+            <h2 style="margin-bottom: 8px; font-weight: 800; font-size: 24px;">SD Jatiwaringin 1</h2>
+            <p style="color: var(--color-text-muted); margin-bottom: 32px; font-size: 14px;">Portal Administrasi Terpadu
+            </p>
 
-            <form id="form-login" class="login-form">
-                <div class="form-group">
-                    <label class="form-label">Alamat Surel (Email)</label>
-                    <input type="email" id="login-email" class="form-control" placeholder="Email Anda..." required>
+            <form id="form-login" style="display: flex; flex-direction: column; gap: 16px;">
+                <div style="position: relative;">
+                    <i class="ph ph-envelope-simple"
+                        style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 20px;"></i>
+                    <input type="email" id="login-email" class="form-control" placeholder="Email Guru" required
+                        style="padding-left: 48px;">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Kata Sandi (Password)</label>
-                    <input type="password" id="login-pass" class="form-control" placeholder="••••••••" required>
+                <div style="position: relative;">
+                    <i class="ph ph-lock-key"
+                        style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted); font-size: 20px;"></i>
+                    <input type="password" id="login-pass" class="form-control" placeholder="Kata Sandi" required
+                        style="padding-left: 48px;">
                 </div>
-                <button type="submit" class="btn btn-primary w-100"
-                    style="height: 44px; justify-content: center; margin-top: 8px;">
+                <button type="submit" class="btn btn-primary"
+                    style="justify-content: center; padding: 14px; margin-top: 8px; font-size: 15px;">
                     <i class="ph ph-sign-in"></i> Masuk Sistem
                 </button>
             </form>
+            <p style="margin-top: 24px; font-size: 12px; color: var(--color-text-muted);">Sistem Keamanan Terenkripsi
+                &bull; Versi 2.0</p>
         </div>
     </div>
 
-    <div class="app-container" id="main-app" style="display: none;">
+    <div id="main-app" class="app-container" style="display: none;">
 
-        <aside class="sidebar" aria-label="Bilah Navigasi Utama">
-            <div class="sidebar-header">
-                <div class="logo-box" aria-hidden="true"><i class="ph-fill ph-graduation-cap"></i></div>
-                <div class="logo-text">
-                    <h2>SD Jatiwaringin 1</h2>
+        <aside class="sidebar">
+            <div
+                style="padding: 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--color-border);">
+                <div style="background: var(--color-primary); color: white; padding: 8px; border-radius: 12px;"><i
+                        class="ph ph-books" style="font-size: 24px;"></i></div>
+                <div>
+                    <h3 style="font-size: 15px; font-weight: 800;">Portal Guru</h3>
+                    <p style="font-size: 11px; color: var(--color-text-muted);">SDN Jatiwaringin 1</p>
                 </div>
             </div>
-            <div class="sidebar-content">
-                <p class="menu-label">MENU UTAMA</p>
-                <nav class="nav-menu" aria-label="Menu Aplikasi">
-                    <a href="#" class="nav-item active" data-target="dashboard" aria-label="Buka Dashboard"><i
-                            class="ph ph-squares-four" aria-hidden="true"></i> Dashboard</a>
-                    <a href="#" class="nav-item" data-target="kelas" aria-label="Buka Kelas Saya"><i
-                            class="ph ph-chalkboard-teacher" aria-hidden="true"></i> Kelas Saya</a>
-                    <a href="#" class="nav-item" data-target="siswa" aria-label="Buka Data Siswa"><i class="ph ph-users"
-                            aria-hidden="true"></i> Data Siswa</a>
-                    <a href="#" class="nav-item" data-target="presensi" aria-label="Buka Absensi Harian"><i
-                            class="ph ph-check-square-offset" aria-hidden="true"></i> Absensi Harian</a>
-                    <a href="#" class="nav-item" data-target="nilai" aria-label="Buka Nilai Akademik"><i
-                            class="ph ph-exam" aria-hidden="true"></i> Nilai Akademik</a>
-                    <a href="#" class="nav-item" data-target="kaldik" aria-label="Buka Kalender Pendidikan"><i
-                            class="ph ph-calendar-check" aria-hidden="true"></i> Kalender Pendidikan</a>
-                </nav>
-            </div>
-            <div class="sidebar-footer">
-                <button class="btn btn-outline w-100 mb-4" id="btn-info-sekolah" style="justify-content: center;"
-                    aria-label="Lihat Profil Sekolah"><i class="ph ph-buildings" aria-hidden="true"></i> Profil
-                    Sekolah</button>
-                <a href="#" class="nav-item" data-target="pengaturan" id="btn-pengaturan"
-                    aria-label="Buka Pengaturan Sistem"><i class="ph ph-gear" aria-hidden="true"></i> Pengaturan</a>
-                <a href="#" class="nav-item text-danger" id="btn-keluar" aria-label="Keluar dari Sesi"><i
-                        class="ph ph-sign-out" aria-hidden="true"></i> Keluar Sesi</a>
+
+            <nav class="nav-menu"
+                style="padding: 24px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1; overflow-y: auto;">
+                <p
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 8px; padding-left: 12px;">
+                    MENU UTAMA</p>
+                <a href="#" class="nav-item btn btn-outline" data-target="dashboard"
+                    style="justify-content: flex-start; border: none; padding: 12px 16px;"><i class="ph ph-squares-four"
+                        style="font-size: 20px;"></i> Dasbor</a>
+                <a href="#" class="nav-item btn btn-outline" data-target="kaldik"
+                    style="justify-content: flex-start; border: none; padding: 12px 16px;"><i
+                        class="ph ph-calendar-blank" style="font-size: 20px;"></i> Kalender Akademik</a>
+
+                <p
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin: 16px 0 8px; padding-left: 12px;">
+                    AKADEMIK</p>
+                <a href="#" class="nav-item btn btn-outline" data-target="kelas"
+                    style="justify-content: flex-start; border: none; padding: 12px 16px;"><i
+                        class="ph ph-chalkboard-teacher" style="font-size: 20px;"></i> Kelas Saya</a>
+                <a href="#" class="nav-item btn btn-outline" data-target="siswa"
+                    style="justify-content: flex-start; border: none; padding: 12px 16px;"><i class="ph ph-users"
+                        style="font-size: 20px;"></i> Data Siswa</a>
+                <a href="#" class="nav-item btn btn-outline" data-target="presensi"
+                    style="justify-content: flex-start; border: none; padding: 12px 16px;"><i
+                        class="ph ph-hand-pointing" style="font-size: 20px;"></i> Absensi Harian</a>
+                <a href="#" class="nav-item btn btn-outline" data-target="nilai"
+                    style="justify-content: flex-start; border: none; padding: 12px 16px;"><i class="ph ph-exam"
+                        style="font-size: 20px;"></i> Penilaian</a>
+            </nav>
+
+            <div class="sidebar-footer" style="padding: 24px 16px; border-top: 1px solid var(--color-border);">
+                <a href="#" class="nav-item btn btn-outline" data-target="pengaturan"
+                    style="justify-content: flex-start; border: none; width: 100%;"><i class="ph ph-gear"
+                        style="font-size: 20px;"></i> Pengaturan</a>
+                <a href="#" id="btn-keluar" class="btn btn-outline text-danger"
+                    style="justify-content: flex-start; border: none; width: 100%; color: var(--color-danger);"><i
+                        class="ph ph-sign-out" style="font-size: 20px;"></i> Keluar Sesi</a>
             </div>
         </aside>
 
         <main class="main-content">
-            <header class="top-nav">
-                <div class="search-bar">
-                    <i class="ph ph-magnifying-glass" aria-hidden="true"></i>
-                    <input type="text" id="input-pencarian" placeholder="Pencarian cepat di modul aktif..."
-                        aria-label="Kolom Pencarian Global">
+            <header class="top-header">
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <div style="position: relative; width: 300px;">
+                        <i class="ph ph-magnifying-glass"
+                            style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--color-text-muted);"></i>
+                        <input type="text" id="input-pencarian" class="form-control"
+                            placeholder="Cari data siswa, nilai, kelas..."
+                            style="padding-left: 44px; border-radius: 20px; background: var(--color-surface-hover); border: none;">
+                    </div>
+                    <div id="cloud-sync-status"
+                        style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: var(--color-text-muted);">
+                        <i class="ph ph-cloud-check" style="font-size: 20px;"></i> <span
+                            class="sync-text">Tersinkronisasi</span>
+                    </div>
                 </div>
-                <div class="user-actions">
-                    <button class="icon-button notification" id="btn-notifikasi" aria-label="Buka Panel Notifikasi"><i
-                            class="ph ph-bell" aria-hidden="true"></i><span class="indicator"></span></button>
-                    <div class="divider"></div>
-                    <div class="user-profile" id="btn-profil" role="button" aria-label="Buka Profil Pengguna"
-                        tabindex="0">
-                        <div class="avatar" aria-hidden="true">GP</div>
-                        <div class="user-info"><span class="user-name">Guru Pengajar</span><span class="user-role">Wali
-                                Kelas 4B</span></div>
-                        <i class="ph ph-caret-down" aria-hidden="true"></i>
+
+                <div style="display: flex; align-items: center; gap: 16px;">
+                    <button class="btn-icon-only" onclick="document.body.classList.toggle('dark-theme')"
+                        style="background: transparent; border: none; font-size: 24px; cursor: pointer; color: var(--color-text-muted);"
+                        title="Ganti Tema">
+                        <i class="ph ph-moon-stars"></i>
+                    </button>
+                    <div style="width: 1px; height: 30px; background: var(--color-border);"></div>
+                    <div class="user-profile" id="btn-profil"
+                        style="display: flex; align-items: center; gap: 12px; cursor: pointer; padding: 8px; border-radius: 12px; transition: background 0.2s;"
+                        onmouseover="this.style.background='var(--color-surface-hover)'"
+                        onmouseout="this.style.background='transparent'">
+                        <div style="text-align: right;">
+                            <h4 class="user-name" style="font-size: 14px; margin-bottom: 2px;">Memuat...</h4>
+                            <p class="user-role" style="font-size: 11px; color: var(--color-text-muted);">Administrator
+                            </p>
+                        </div>
+                        <div class="avatar"
+                            style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-hover) 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; box-shadow: var(--shadow-sm);">
+                            GP
+                        </div>
                     </div>
                 </div>
             </header>
-            <div class="dashboard-wrapper" id="app-content" role="region" aria-live="polite"></div>
+
+            <div id="app-content" style="padding: 32px; max-width: 1400px; margin: 0 auto; width: 100%;">
+            </div>
         </main>
     </div>
 
-    <div id="toast-container" class="toast-container" aria-live="assertive"></div>
-    <script type="module" src="js/main.js" defer></script>
+    <div id="toast-container"
+        style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px;">
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script type="module" src="js/firebase.js"></script>
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/database.js"></script>
+    <script type="module" src="js/auth.js"></script>
+    <script type="module" src="js/main.js"></script>
+
 </body>
 
 </html>
