@@ -1,5 +1,5 @@
 <div class="view-section active">
-
+    <!-- HEADER & KONTROL ATAS -->
     <div
         style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div>
@@ -29,6 +29,7 @@
                 <i class="ph ph-qr-code"></i> Pindai QR
             </button>
 
+            <!-- Tombol Ekspor Excel -->
             <button class="btn btn-outline" id="btn-ekspor-presensi"
                 style="background: var(--color-surface-solid); color: var(--color-success); border-color: var(--color-success-bg);">
                 <i class="ph ph-file-xls"></i> Unduh Rekap
@@ -36,6 +37,7 @@
         </div>
     </div>
 
+    <!-- PANEL ASISTEN AI (OTOMATISASI ABSEN) -->
     <div class="glass-panel"
         style="padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--color-primary); background: linear-gradient(to right, var(--color-surface), transparent);">
         <h3 style="font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
@@ -57,41 +59,30 @@
         </div>
     </div>
 
+    <!-- PANEL INPUT MANUAL TERPADU -->
     <div class="glass-panel" style="padding: 24px; margin-bottom: 24px; border-top: 1px solid var(--color-border);">
         <h3 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
             <i class="ph-fill ph-hand-pointing" style="color: var(--color-info); font-size: 20px;"></i> Input Absensi
             Manual
         </h3>
-
         <form id="form-tambah-presensi"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; align-items: end;">
-            <div class="form-group">
-                <label
-                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">TANGGAL</label>
-                <input type="date" id="input-tanggal" class="form-control" required>
-            </div>
-
-            <div class="form-group">
-                <label
+            <div class="form-group"><label
+                    style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">TANGGAL</label><input
+                    type="date" id="input-tanggal" class="form-control" required></div>
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">KELAS
-                    / MAPEL</label>
-                <select id="input-mapel-kelas" class="form-control" required style="cursor: pointer;">
+                    / MAPEL</label><select id="input-mapel-kelas" class="form-control" required
+                    style="cursor: pointer;">
                     <option value="" disabled selected>Memuat jadwal...</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label
+                </select></div>
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">NAMA
-                    SISWA</label>
-                <select id="input-nama" class="form-control" required disabled
+                    SISWA</label><select id="input-nama" class="form-control" required disabled
                     style="background: var(--color-surface-hover);">
                     <option value="" disabled selected>Pilih kelas dulu</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label
+                </select></div>
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">STATUS</label>
                 <select id="input-status" class="form-control" required style="cursor: pointer; font-weight: 600;">
                     <option value="Hadir" style="color: var(--color-success);">✅ Hadir</option>
@@ -101,16 +92,13 @@
                     <option value="Alpha" style="color: var(--color-danger);">❌ Alpha</option>
                 </select>
             </div>
-
-            <div class="form-group">
-                <button type="submit" class="btn btn-outline"
-                    style="width: 100%; justify-content: center; height: 44px; border-color: var(--color-info); color: var(--color-info);">
-                    <i class="ph ph-check-circle"></i> Rekam
-                </button>
-            </div>
+            <div class="form-group"><button type="submit" class="btn btn-outline"
+                    style="width: 100%; justify-content: center; height: 44px; border-color: var(--color-info); color: var(--color-info);"><i
+                        class="ph ph-check-circle"></i> Rekam</button></div>
         </form>
     </div>
 
+    <!-- TABEL DATA ABSENSI -->
     <div class="glass-panel" style="overflow: hidden;">
         <div class="table-responsive">
             <table id="tabel-presensi">
@@ -123,10 +111,8 @@
                         <th style="width: 10%; text-align: right;">AKSI</th>
                     </tr>
                 </thead>
-                <tbody id="body-tabel-presensi">
-                </tbody>
+                <tbody id="body-tabel-presensi"></tbody>
             </table>
         </div>
     </div>
-
 </div>

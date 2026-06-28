@@ -6,18 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Guru - SD Jatiwaringin 1</title>
 
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
 
+    <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+    <!-- CSS Utama -->
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
+    <!-- HALAMAN LOGIN -->
     <div id="login-screen"
         style="display: flex; height: 100vh; align-items: center; justify-content: center; background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-bg-app) 100%); position: fixed; top: 0; left: 0; width: 100%; z-index: 9999;">
         <div class="glass-panel" style="padding: 40px; width: 90%; max-width: 400px; text-align: center;">
@@ -52,8 +56,10 @@
         </div>
     </div>
 
+    <!-- APLIKASI UTAMA -->
     <div id="main-app" class="app-container" style="display: none;">
 
+        <!-- SIDEBAR NAVIGASI -->
         <aside class="sidebar">
             <div
                 style="padding: 24px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--color-border);">
@@ -104,6 +110,7 @@
             </div>
         </aside>
 
+        <!-- KONTEN UTAMA -->
         <main class="main-content">
             <header class="top-header">
                 <div style="display: flex; align-items: center; gap: 16px;">
@@ -146,16 +153,24 @@
             </header>
 
             <div id="app-content" style="padding: 32px; max-width: 1400px; margin: 0 auto; width: 100%;">
+                <!-- Konten dinamis -->
             </div>
         </main>
     </div>
 
+    <!-- Sistem Toast Notifikasi -->
     <div id="toast-container"
         style="position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 12px;">
     </div>
 
+    <!-- Pustaka Grafik & Cetak Data -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <!-- INJEKSI SHEET.JS -->
 
+    <!-- Modul JavaScript Inti -->
     <script type="module" src="js/firebase.js"></script>
     <script type="module" src="js/utils.js"></script>
     <script type="module" src="js/database.js"></script>

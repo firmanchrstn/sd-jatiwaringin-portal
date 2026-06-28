@@ -1,5 +1,5 @@
 <div class="view-section active">
-
+    <!-- HEADER & KONTROL ATAS -->
     <div
         style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <div>
@@ -23,6 +23,20 @@
                     <option value="6A">Kelas 6A</option>
                 </select>
             </div>
+
+            <!-- Tombol Import Excel Baru -->
+            <label class="btn btn-outline"
+                style="background: var(--color-surface-solid); color: var(--color-info); border-color: var(--color-info-bg); cursor: pointer; margin-bottom: 0;">
+                <i class="ph ph-upload-simple"></i> Import Excel
+                <input type="file" id="input-import-siswa" accept=".xlsx, .xls" style="display: none;">
+            </label>
+
+            <!-- Tombol Export Excel Baru -->
+            <button class="btn btn-outline" id="btn-ekspor-siswa"
+                style="background: var(--color-surface-solid); color: var(--color-success); border-color: var(--color-success-bg);">
+                <i class="ph ph-file-xls"></i> Unduh Data
+            </button>
+
             <button class="btn btn-outline"
                 onclick="const form = document.getElementById('panel-tambah-manual'); form.style.display = form.style.display === 'none' ? 'block' : 'none';"
                 style="background: var(--color-surface-solid);">
@@ -31,6 +45,7 @@
         </div>
     </div>
 
+    <!-- PANEL ASISTEN AI (OTOMATISASI) -->
     <div class="glass-panel"
         style="padding: 24px; margin-bottom: 24px; border-left: 4px solid var(--color-primary); background: linear-gradient(to right, var(--color-surface), transparent);">
         <h3 style="font-size: 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
@@ -62,51 +77,41 @@
         </div>
     </div>
 
+    <!-- PANEL FORM MANUAL -->
     <div id="panel-tambah-manual" class="glass-panel"
         style="padding: 24px; margin-bottom: 24px; display: none; border-left: 4px solid var(--color-info);">
         <h3 style="font-size: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;">
             <i class="ph-fill ph-keyboard" style="color: var(--color-info); font-size: 20px;"></i> Input Registrasi
             Tradisional
         </h3>
-
         <form id="form-tambah-siswa"
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-            <div class="form-group">
-                <label
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">NAMA
-                    LENGKAP SISWA</label>
-                <input type="text" id="s-nama" class="form-control" required placeholder="Cth: Muhammad Budi...">
-            </div>
-            <div class="form-group">
-                <label
+                    LENGKAP SISWA</label><input type="text" id="s-nama" class="form-control" required
+                    placeholder="Cth: Muhammad Budi..."></div>
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">NOMOR
-                    INDUK (NIK/NISN)</label>
-                <input type="number" id="s-nik" class="form-control" required placeholder="Cth: 31750...">
-            </div>
-            <div class="form-group">
-                <label
+                    INDUK (NIK/NISN)</label><input type="number" id="s-nik" class="form-control" required
+                    placeholder="Cth: 31750..."></div>
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">JENIS
-                    KELAMIN</label>
-                <select id="s-jk" class="form-control" required cursor="pointer">
+                    KELAMIN</label><select id="s-jk" class="form-control" required cursor="pointer">
                     <option value="Laki-laki">Laki-laki</option>
                     <option value="Perempuan">Perempuan</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label
+                </select></div>
+            <div class="form-group"><label
                     style="font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 6px; display: block;">NAMA
-                    WALI / AYAH</label>
-                <input type="text" id="s-ayah" class="form-control" required placeholder="Cth: Bapak Joko...">
-            </div>
-            <div class="form-group" style="display: flex; align-items: flex-end;">
-                <button type="submit" class="btn btn-outline"
-                    style="width: 100%; justify-content: center; height: 44px; border-color: var(--color-info); color: var(--color-info);">
-                    <i class="ph ph-floppy-disk"></i> Simpan Data
-                </button>
-            </div>
+                    WALI / AYAH</label><input type="text" id="s-ayah" class="form-control" required
+                    placeholder="Cth: Bapak Joko..."></div>
+            <div class="form-group" style="display: flex; align-items: flex-end;"><button type="submit"
+                    class="btn btn-outline"
+                    style="width: 100%; justify-content: center; height: 44px; border-color: var(--color-info); color: var(--color-info);"><i
+                        class="ph ph-floppy-disk"></i> Simpan Data</button></div>
         </form>
     </div>
 
+    <!-- TABEL DATA SISWA -->
     <div class="glass-panel" style="overflow: hidden;">
         <div class="table-responsive">
             <table id="tabel-siswa">
@@ -119,10 +124,8 @@
                         <th style="width: 10%; text-align: right;">AKSI</th>
                     </tr>
                 </thead>
-                <tbody id="body-tabel-siswa">
-                </tbody>
+                <tbody id="body-tabel-siswa"></tbody>
             </table>
         </div>
     </div>
-
 </div>

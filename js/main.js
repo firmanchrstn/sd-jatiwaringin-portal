@@ -148,7 +148,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            // === MERENDER GRAFIK CHART.JS ===
             const ctx = document.getElementById('dashboard-chart');
             if (ctx && typeof Chart !== 'undefined') {
                 if (window.grafikAkademik) window.grafikAkademik.destroy();
@@ -191,20 +190,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         },
                         scales: {
                             y: {
-                                beginAtZero: false,
-                                min: 60,
-                                max: 100,
+                                beginAtZero: false, min: 60, max: 100,
                                 grid: { color: 'rgba(226, 232, 240, 0.5)' },
                                 border: { display: false }
                             },
-                            x: {
-                                grid: { display: false },
-                                border: { display: false }
-                            }
+                            x: { grid: { display: false }, border: { display: false } }
                         },
-                        animation: {
-                            y: { duration: 2000, easing: 'easeOutElastic' }
-                        }
+                        animation: { y: { duration: 2000, easing: 'easeOutElastic' } }
                     }
                 });
             }
@@ -236,6 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
             window.hapusSiswa = (id) => { if (confirm('Hapus?')) { dataSiswa = dataSiswa.filter(s => s.id !== id); DB.setSiswa(dataSiswa); renderTabelSiswa(); } };
             renderTabelSiswa();
 
+            // AI SISWA
             document.getElementById('btn-proses-ai-siswa')?.addEventListener('click', async () => {
                 if (!cekKunci()) return;
                 const teks = document.getElementById('ai-siswa-input').value; const kls = document.getElementById('s-kelas').value;
@@ -248,6 +241,66 @@ document.addEventListener('DOMContentLoaded', () => {
                     JSON.parse(textAI).forEach(i => dataSiswa.push({ id: Date.now().toString() + Math.random(), nama: i.nama, jk: i.jk, kelas: kls, nik: i.nik || '-', ayah: i.ayah || '-' }));
                     DB.setSiswa(dataSiswa); renderTabelSiswa(); document.getElementById('ai-siswa-input').value = ''; tampilkanToast('Berhasil (AI)', 'success');
                 } catch (e) { tampilkanToast('Gagal AI', 'danger'); } finally { btn.innerHTML = '<i class="ph ph-sparkle"></i> Proses'; btn.disabled = false; }
+            });
+
+            // === FUNGSI EKSPOR EXCEL SISWA ===
+            document.getElementById('btn-ekspor-siswa')?.addEventListener('click', () => {
+                if (typeof XLSX === 'undefined') return tampilkanToast('Sistem Excel sedang memuat, tunggu sebentar.', 'info');
+                if (dataSiswa.length === 0) return tampilkanToast('Data siswa kosong!', 'warning');
+
+                tampilkanToast('Menyiapkan file Excel...', 'info');
+                const dataEkspor = dataSiswa.map((s, index) => ({
+                    'No': index + 1,
+                    'NIS/NISN': s.nik,
+                    'Nama Lengkap': s.nama,
+                    'L/P': s.jk,
+                    'Kelas': s.kelas,
+                    'Nama Orang Tua': s.ayah
+                }));
+                const ws = XLSX.utils.json_to_sheet(dataEkspor);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Data_Siswa");
+                XLSX.writeFile(wb, `Data_Siswa_SD_Jatiwaringin.xlsx`);
+                tampilkanToast('File Excel berhasil diunduh!', 'success');
+            });
+
+            // === FUNGSI IMPOR EXCEL SISWA ===
+            document.getElementById('input-import-siswa')?.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+
+                tampilkanToast('Membaca file Excel...', 'info');
+                const reader = new FileReader();
+                reader.onload = function (evt) {
+                    try {
+                        const data = evt.target.result;
+                        const workbook = XLSX.read(data, { type: 'binary' });
+                        const firstSheet = workbook.SheetNames[0];
+                        const excelData = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
+
+                        let sukses = 0;
+                        excelData.forEach(row => {
+                            const nama = row['Nama Lengkap'] || row['Nama'] || '';
+                            if (nama) {
+                                dataSiswa.push({
+                                    id: Date.now().toString() + Math.random(),
+                                    nama: sanitize(nama),
+                                    jk: row['L/P'] || row['Jenis Kelamin'] || 'Laki-laki',
+                                    kelas: row['Kelas'] || '1A',
+                                    nik: sanitize((row['NIS/NISN'] || row['NIS'] || '').toString()),
+                                    ayah: sanitize(row['Nama Orang Tua'] || row['Ayah'] || '')
+                                });
+                                sukses++;
+                            }
+                        });
+                        DB.setSiswa(dataSiswa); renderTabelSiswa();
+                        tampilkanToast(`Berhasil mengimpor ${sukses} data siswa!`, 'success');
+                    } catch (err) {
+                        tampilkanToast('Gagal membaca file Excel! Pastikan header tabel benar.', 'danger');
+                    }
+                    e.target.value = "";
+                };
+                reader.readAsBinaryString(file);
             });
         }
 
@@ -299,6 +352,28 @@ document.addEventListener('DOMContentLoaded', () => {
                     DB.setPresensi(dataPresensi); renderPresensi(); document.getElementById('ai-absen-input').value = ''; tampilkanToast('Berhasil (AI)', 'success');
                 } catch (e) { tampilkanToast('Gagal AI', 'danger'); } finally { btn.innerHTML = '<i class="ph ph-sparkle"></i> Proses'; btn.disabled = false; }
             });
+
+            // === FUNGSI EKSPOR EXCEL PRESENSI ===
+            document.getElementById('btn-ekspor-presensi')?.addEventListener('click', () => {
+                if (typeof XLSX === 'undefined') return tampilkanToast('Sistem Excel sedang memuat.', 'info');
+                if (dataPresensi.length === 0) return tampilkanToast('Data absensi kosong!', 'warning');
+
+                const filter = document.getElementById('filter-kelas-presensi').value;
+                const dataTampil = filter !== 'Semua' ? dataPresensi.filter(d => { const s = dbSiswa.find(x => x.nama === d.nama); return s && s.kelas === filter; }) : dataPresensi;
+
+                const dataEkspor = dataTampil.map((p, index) => ({
+                    'No': index + 1,
+                    'Tanggal': formatTglBaku(new Date(p.tanggal)),
+                    'Kelas / Mapel': p.mapel,
+                    'Nama Siswa': p.nama,
+                    'Status': p.status
+                }));
+                const ws = XLSX.utils.json_to_sheet(dataEkspor);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Rekap_Absensi");
+                XLSX.writeFile(wb, `Rekap_Absensi_${filter === 'Semua' ? 'Global' : filter}.xlsx`);
+                tampilkanToast('Rekap Absensi berhasil diunduh!', 'success');
+            });
         }
 
         // 4. NILAI
@@ -321,6 +396,90 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             window.hapusNilai = (id) => { if (confirm('Hapus?')) { dataNilai = dataNilai.filter(s => s.id !== id); DB.setNilai(dataNilai); renderNilai(); } };
             renderNilai();
+
+            document.getElementById('btn-cetak-rapor')?.addEventListener('click', () => {
+                const dbS = DB.getSiswa();
+                const dbN = DB.getNilai();
+
+                if (dbN.length === 0) return tampilkanToast('Belum ada data nilai untuk dicetak!', 'warning');
+
+                const namaAnak = prompt("Masukkan NAMA LENGKAP siswa yang ingin dicetak rapornya:\n(Pastikan huruf besar/kecil sesuai database)");
+                if (!namaAnak) return;
+
+                const siswaObj = dbS.find(s => s.nama.toLowerCase() === namaAnak.toLowerCase());
+                if (!siswaObj) return tampilkanToast('Data siswa tidak ditemukan di database!', 'danger');
+
+                const nilaiSiswa = dbN.filter(n => n.nama.toLowerCase() === namaAnak.toLowerCase());
+                if (nilaiSiswa.length === 0) return tampilkanToast('Siswa ini belum memiliki satupun nilai!', 'warning');
+
+                const rekapMapel = {};
+                nilaiSiswa.forEach(n => {
+                    if (!rekapMapel[n.mapel]) rekapMapel[n.mapel] = { Tugas: 0, Harian: 0, UTS: 0, UAS: 0 };
+                    if (n.jenis === 'Tugas') rekapMapel[n.mapel].Tugas = n.skor;
+                    if (n.jenis === 'Harian') rekapMapel[n.mapel].Harian = n.skor;
+                    if (n.jenis === 'UTS') rekapMapel[n.mapel].UTS = n.skor;
+                    if (n.jenis === 'UAS') rekapMapel[n.mapel].UAS = n.skor;
+                });
+
+                const bodyData = [];
+                let i = 1;
+                for (const [mapel, skor] of Object.entries(rekapMapel)) {
+                    const nilaiAkhir = Math.round((skor.Tugas * 0.20) + (skor.Harian * 0.30) + (skor.UTS * 0.25) + (skor.UAS * 0.25));
+                    let predikat = 'D';
+                    if (nilaiAkhir >= 90) predikat = 'A';
+                    else if (nilaiAkhir >= 80) predikat = 'B';
+                    else if (nilaiAkhir >= 75) predikat = 'C';
+                    bodyData.push([i++, mapel, skor.Tugas || '-', skor.Harian || '-', skor.UTS || '-', skor.UAS || '-', nilaiAkhir, predikat]);
+                }
+
+                tampilkanToast('Menyusun PDF Rapor...', 'success');
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+
+                doc.setFontSize(18);
+                doc.setFont("helvetica", "bold");
+                doc.text("RAPOR HASIL BELAJAR SISWA", 105, 20, { align: "center" });
+                doc.setFontSize(12);
+                doc.text("SD JATIWARINGIN 1 PORTAL", 105, 28, { align: "center" });
+
+                doc.setLineWidth(0.5);
+                doc.line(15, 35, 195, 35);
+
+                doc.setFontSize(11);
+                doc.setFont("helvetica", "normal");
+                doc.text(`Nama Siswa    : ${siswaObj.nama}`, 15, 45);
+                doc.text(`NIS / NISN    : ${siswaObj.nik}`, 15, 52);
+                doc.text(`Kelas         : ${siswaObj.kelas}`, 130, 45);
+
+                const thn = new Date().getFullYear();
+                const bln = new Date().getMonth();
+                const semester = bln >= 6 ? "Ganjil" : "Genap";
+                doc.text(`Semester      : ${semester} / ${thn}`, 130, 52);
+
+                doc.autoTable({
+                    startY: 60,
+                    head: [['No', 'Mata Pelajaran', 'Tugas\n(20%)', 'Harian\n(30%)', 'UTS\n(25%)', 'UAS\n(25%)', 'Nilai\nAkhir', 'Predikat']],
+                    body: bodyData,
+                    theme: 'grid',
+                    headStyles: { fillColor: [79, 70, 229], textColor: [255, 255, 255], fontStyle: 'bold', halign: 'center', valign: 'middle' },
+                    columnStyles: {
+                        0: { halign: 'center', cellWidth: 10 },
+                        2: { halign: 'center' }, 3: { halign: 'center' }, 4: { halign: 'center' }, 5: { halign: 'center' },
+                        6: { halign: 'center', fontStyle: 'bold', fillColor: [241, 245, 249] },
+                        7: { halign: 'center', fontStyle: 'bold', textColor: [79, 70, 229] }
+                    },
+                });
+
+                const finalY = doc.lastAutoTable.finalY || 100;
+                doc.text("Mengetahui,", 15, finalY + 25);
+                doc.text("Orang Tua/Wali,", 15, finalY + 50);
+
+                const dateStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+                doc.text(`Bekasi, ${dateStr}`, 130, finalY + 25);
+                doc.text("Wali Kelas,", 130, finalY + 50);
+
+                doc.save(`Rapor_${siswaObj.nama.replace(/\s+/g, '_')}_${semester}_${thn}.pdf`);
+            });
 
             document.getElementById('btn-proses-ai-nilai')?.addEventListener('click', async () => {
                 if (!cekKunci()) return;
